@@ -16,6 +16,7 @@ import { UserManagement } from './pages/UserManager/UserManagement';
 import { useSelector, useDispatch } from 'react-redux';
 import { initToken, initUserInfo } from './pages/Authentication/signupSlice'
 import HomePage from './pages/Home/Index'
+import BloodGroup from './pages/BloodGroup/Index'
 
 
 const App = () => {
@@ -66,6 +67,7 @@ const App = () => {
           <Route path='/auth/signup' element={<SignUp />} />
           <Route path='/' element={<HomePage />} />
           <Route path='/admin/users' element={<ProtectedRoute auth={auth} children={<UserManagement/>} />} />
+          <Route path='/admin/bloodgroups' element={<ProtectedRoute auth={auth} children={<BloodGroup/>} />} />
         </Routes>
       </>
     )

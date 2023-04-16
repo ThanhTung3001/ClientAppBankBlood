@@ -149,3 +149,6 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+.ui.table{
+  margin-bottom: 0px !important;
+}
