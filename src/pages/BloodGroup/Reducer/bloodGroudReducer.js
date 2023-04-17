@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { GetWithToken, PostWithToken, PutWithToken } from "../../../app/api/apiMethod"
+import { DeleteWithToken, GetWithToken, PostWithToken, PutWithToken } from "../../../app/api/apiMethod"
 import { toast } from "react-toastify";
 
 
@@ -17,17 +17,22 @@ export const fetchBloodGroup = createAsyncThunk("blood/fetchBloodGroup", async (
     return data;
 });
 
-export const updateBoodGroup = createAsyncThunk('bloodgroup/bloodGroupUpdate', async ({data, token}) => {
+export const updateBoodGroup = createAsyncThunk('bloodgroup/bloodGroupUpdate', async ({ data, token }) => {
     console.log(data);
     var { data } = await PutWithToken({ url: `/api/BloodGroup/${data.id}`, token: token, body: data });
     return data;
 });
 
-export const insertBloodGroup = createAsyncThunk('bloodgroup/bloodGroupInsert', async ({data, token}) => {
-   
+export const insertBloodGroup = createAsyncThunk('bloodgroup/bloodGroupInsert', async ({ data, token }) => {
+
     var { data } = await PostWithToken({ url: `/api/BloodGroup/`, token: token, body: data });
     return data;
 });
+
+export const deleteBloodGroup = createAsyncThunk('bloodgroup/bloodgroupDelete', async ({ data, token }) => {
+    var { data } = await DeleteWithToken({ url: `/api/BloodGroup/${data.id}`, token });
+    return data;
+})
 
 const bloodGroupSlice = createSlice({
     name: 'bloodGroupSlice',
@@ -61,6 +66,18 @@ const bloodGroupSlice = createSlice({
         builder.addCase(insertBloodGroup.rejected, (state, action) => {
             state.loading = false;
             toast.error('Insert bloodbank fail')
+        })
+        builder.addCase(deleteBloodGroup.fulfilled, (state, action) => {
+            state.loading = false;
+            toast.success('Delete bloodbank success');
+            state.data = state.data.filter(e => {
+                return e.id != action.payload.data
+            })
+
+        })
+        builder.addCase(deleteBloodGroup.rejected, (state, action) => {
+            state.loading = false;
+            toast.error('Delete bloodbank fail')
         })
     }
 });

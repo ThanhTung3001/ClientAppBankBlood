@@ -17,6 +17,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { initToken, initUserInfo } from './pages/Authentication/signupSlice'
 import HomePage from './pages/Home/Index'
 import BloodGroup from './pages/BloodGroup/Index'
+import { Forbidden } from './pages/403/Index'
+import Hospital from './pages/Hospitals/Index'
 
 
 const App = () => {
@@ -24,8 +26,9 @@ const App = () => {
 
   const preloader = document.getElementById('preloader');
   const dispatch = useDispatch();
-  const auth = useSelector(state=>state.SignUp.auth);
-  const token = useSelector(state=>state.SignUp.token);
+  const auth = useSelector(state => state.SignUp.auth);
+  const token = useSelector(state => state.SignUp.token);
+  const userInfo = useSelector(state => state.SignUp.userResponse);
 
 
   if (preloader) {
@@ -36,17 +39,17 @@ const App = () => {
   }
 
   useEffect(() => {
-   // setTimeout(() => setLoading(false), 1000)
-   var token = localStorage.getItem("Token");
-   var Info = localStorage.getItem("UserInfo")
-   if(token!=null){
-    
+    // setTimeout(() => setLoading(false), 1000)
+    var token = localStorage.getItem("Token");
+    var Info = localStorage.getItem("UserInfo")
+    if (token != null) {
+
       dispatch(initToken(token));
-     
-   }
-   if(Info!=null){
-     dispatch(initUserInfo(JSON.parse(Info)))
-   }
+
+    }
+    if (Info != null) {
+      dispatch(initUserInfo(JSON.parse(Info)))
+    }
   }, [])
 
   return (
@@ -66,8 +69,9 @@ const App = () => {
           <Route path='/auth/signin' element={<SignIn />} />
           <Route path='/auth/signup' element={<SignUp />} />
           <Route path='/' element={<HomePage />} />
-          <Route path='/admin/users' element={<ProtectedRoute auth={auth} children={<UserManagement/>} />} />
-          <Route path='/admin/bloodgroups' element={<ProtectedRoute auth={auth} children={<BloodGroup/>} />} />
+          <Route path='/admin/users' element={<ProtectedRoute auth={auth} children={<UserManagement />} userInfo={userInfo} />} />
+          <Route path='/admin/bloodgroups' element={<ProtectedRoute auth={auth} children={<BloodGroup />} userInfo={userInfo} />} />
+          <Route path='/admin/hospitals' element={<ProtectedRoute auth={auth} children={<Hospital />} userInfo={userInfo} />} />
         </Routes>
       </>
     )
@@ -77,9 +81,15 @@ const App = () => {
 export default App
 
 
-const ProtectedRoute = ({ auth, children }) => {
+const ProtectedRoute = ({ auth, children, userInfo, role = "Admin" }) => {
   if (!auth) {
     return <Navigate to="/auth/signin" replace />;
+  }
+  var roles = userInfo.data.roles;
+  console.log(roles);
+  if (!roles.includes(role)) {
+
+    return <Forbidden />
   }
 
   return children;

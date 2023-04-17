@@ -9,7 +9,7 @@ import BloodGroupEdit from './BloodGroupEdit';
 import BloodGroupInsert from './BloodGruopInsert';
 import BloodGroupDelete from './BloodGroupDelete';
 
-export default function BloodGroup() {
+export default function RegisterBloodBank() {
     const totalPage = useSelector(state => state.BloodGroup.totalPage);
     const data = useSelector(state => state.BloodGroup.data);
     const page = useSelector(state => state.BloodGroup.page);
@@ -104,9 +104,9 @@ export default function BloodGroup() {
     return (
 
         <DefaultLayout>
-            <Breadcrumb pageName='Blood Group' />
+            <Breadcrumb pageName='Register Donate' />
             <>
-                <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-3'>
+                <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                     <div className="flex flex-row justify-end">
                         <div className="flex w-[50px] justify-center rounded bg-primary m-3 mr-4 mb-0 p-3 font-medium text-gray">
                             <AiFillPlusSquare size={16} onClick={() => setModalInsert(true)} />
@@ -166,9 +166,9 @@ export default function BloodGroup() {
                         />
                     </div>
                 </div>
-                <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                {/* <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
                 <BloodGroupInsert open={modalInsert} handlerConfirm={handlerInsertBloodGroup} handleClose={() => setModalInsert(false)} />
-                <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} />
+                <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} /> */}
             </>
         </DefaultLayout>
     )

@@ -3,18 +3,17 @@ import DefaultLayout from '../../layout/DefaultLayout'
 import Breadcrumb from '../../components/Breadcrumb';
 import { Table, Input, Pagination, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/bloodGroudReducer';
+// import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/hospitalReducer';
 import { AiFillDelete, AiFillEdit, AiFillEye, AiFillPlusSquare } from "react-icons/ai";
-import BloodGroupEdit from './BloodGroupEdit';
-import BloodGroupInsert from './BloodGruopInsert';
-import BloodGroupDelete from './BloodGroupDelete';
+import { deleteHospital, fetchHospital, updateHospital } from './Reducer/hospitalReducer';
+import { HospitalEdit } from './HospitalEdit';
 
-export default function BloodGroup() {
-    const totalPage = useSelector(state => state.BloodGroup.totalPage);
-    const data = useSelector(state => state.BloodGroup.data);
-    const page = useSelector(state => state.BloodGroup.page);
+export default function Hospital() {
+    const totalPage = useSelector(state => state.Hospital.totalPage);
+    const data = useSelector(state => state.Hospital.data);
+    const page = useSelector(state => state.Hospital.page);
     const appToken = useSelector(state => state.SignUp.token);
-    const loading = useSelector(state => state.BloodGroup.loading);
+    const loading = useSelector(state => state.Hospital.loading);
     const userCurrentData = useSelector(state => state.SignUp.userResponse)
     //Modal
     const [modalView, setModalView] = useState(false);
@@ -23,6 +22,7 @@ export default function BloodGroup() {
     const [modalInsert, setModalInsert] = useState(false);
     //ValueSelected
     const [valueSelected, setValueSelected] = useState({});
+    const dispatch = useDispatch();
     //Handler
     const SeletedHandler = (value) => {
         setValueSelected(value);
@@ -47,11 +47,11 @@ export default function BloodGroup() {
         data.updateBy = userCurrentData.data.userName;
         data.updateTime = now.toISOString();
         // console.log(appToken);
-        dispatch(updateBoodGroup({
+        dispatch(updateHospital({
             data: data,
             token: appToken
         }));
-        dispatch(fetchBloodGroup({
+        dispatch(fetchHospital({
             page: page,
             pageSize: 20,
             token: appToken
@@ -59,11 +59,11 @@ export default function BloodGroup() {
 
     }
     const handleConfirmDeleteBloodGroup = (data) => {
-        dispatch(deleteBloodGroup({
+        dispatch(deleteHospital({
             data: data,
             token: appToken
         }));
-        dispatch(fetchBloodGroup({
+        dispatch(fetchHospital({
             page: page,
             pageSize: 20,
             token: appToken
@@ -90,9 +90,10 @@ export default function BloodGroup() {
     }
 
 
-    const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch(fetchBloodGroup({
+
+        dispatch(fetchHospital({
             page: page,
             pageSize: 20,
             token: appToken
@@ -104,7 +105,7 @@ export default function BloodGroup() {
     return (
 
         <DefaultLayout>
-            <Breadcrumb pageName='Blood Group' />
+            <Breadcrumb pageName='Hospital' />
             <>
                 <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-3'>
                     <div className="flex flex-row justify-end">
@@ -122,10 +123,13 @@ export default function BloodGroup() {
                                     Name
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Description
+                                    Addresss
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Capacity (ml)
+                                    Phone Number
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    Location
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     Handler
@@ -138,8 +142,13 @@ export default function BloodGroup() {
                                 <Table.Row key={item.id}>
                                     <Table.Cell>{index + 1}</Table.Cell>
                                     <Table.Cell>{item.name}</Table.Cell>
-                                    <Table.Cell>{item.description}</Table.Cell>
-                                    <Table.Cell>{item.capacity}</Table.Cell>
+                                    <Table.Cell>{item.address}</Table.Cell>
+                                    <Table.Cell>{item.phoneNumber}</Table.Cell>
+                                    <Table.Cell>
+                                        - Lat : {item.lat}
+                                        <br></br>
+                                        - Long : {item.long}
+                                    </Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
                                             <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
@@ -166,9 +175,10 @@ export default function BloodGroup() {
                         />
                     </div>
                 </div>
-                <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                <HospitalEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                {/* <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
                 <BloodGroupInsert open={modalInsert} handlerConfirm={handlerInsertBloodGroup} handleClose={() => setModalInsert(false)} />
-                <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} />
+                <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} /> */}
             </>
         </DefaultLayout>
     )
