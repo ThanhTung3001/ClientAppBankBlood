@@ -72,7 +72,7 @@ export default function BloodGroup() {
     const handlerInsertBloodGroup = (data) => {
 
         var now = new Date();
-        data.id = valueSelected.id;
+        data.id = 0;
         data.updateBy = userCurrentData.data.userName;
         data.updateTime = now.toISOString();
         data.createBy = userCurrentData.data.userName;

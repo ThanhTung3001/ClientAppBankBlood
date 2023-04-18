@@ -34,6 +34,12 @@ const SignUpSlice = createSlice({
         initUserInfo: (state, action) => {
             state.userResponse = action.payload;
             state.auth = true;
+        },
+        SignOut: (state, action) => {
+            state.userResponse = {};
+            state.auth = false;
+            localStorage.removeItem('Token');
+            localStorage.removeItem('UserInfo');
         }
     },
     extraReducers: (builder => {
@@ -79,5 +85,5 @@ const SignUpSlice = createSlice({
 });
 
 export default SignUpSlice.reducer;
-export const { initToken, initUserInfo } = SignUpSlice.actions;
+export const { initToken, initUserInfo, SignOut } = SignUpSlice.actions;
 export const token = state => state.SignUp.token;

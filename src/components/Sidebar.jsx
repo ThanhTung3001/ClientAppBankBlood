@@ -4,7 +4,7 @@ import SidebarLinkGroup from './SidebarLinkGroup'
 import Logo from '../images/logo/logo.svg';
 import { AiFillNotification, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { BiDonateBlood } from 'react-icons/bi';
-import { MdLocalHospital } from "react-icons/md";
+import { MdBloodtype, MdGroup, MdLocalHospital } from "react-icons/md";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation()
@@ -384,6 +384,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 >
                   <MdLocalHospital />
                   Hospitals
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to='/admin/registers'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('calendar') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  <MdBloodtype />
+                  Register
                 </NavLink>
               </li>
               {/* <!-- Menu Item Profile --> */}

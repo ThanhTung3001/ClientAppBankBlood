@@ -21,7 +21,7 @@ export const PutWithToken = async ({ url, body, token }) => {
   // const appToken = useSelector(state=>state.SignUp.token);
   var response = await axios.put(`${BASE_URL}${url}`, body, {
     headers: {
-      'Authorization': token
+      'Authorization': token,
     },
   });
   return response;
@@ -30,7 +30,7 @@ export const GetWithToken = async ({ url, token }) => {
   //  const token = useSelector(state=>state.SignUp.token);
   // console.log(token);
   var urls = `${BASE_URL}${url}`;
-
+  // console.log({ urls, token });
   var response = await axios.get(urls, {
     headers: {
       'Authorization': token
@@ -55,11 +55,10 @@ export const PatchWithToken = async ({ url, body, token }) => {
 
 export const DeleteWithToken = async ({ url, body, token }) => {
   //  const token = useSelector(state=>state.SignUp.token);
-  // console.log(token);
+  console.log(token);
   var response = await axios.delete(`${BASE_URL}${url}`, {
     headers: {
       'Authorization': token,
-      "Content-Type": "application/json"
     },
   });
   //  console.log(response);

@@ -5,8 +5,10 @@ import { Table, Input, Pagination, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/hospitalReducer';
 import { AiFillDelete, AiFillEdit, AiFillEye, AiFillPlusSquare } from "react-icons/ai";
-import { deleteHospital, fetchHospital, updateHospital } from './Reducer/hospitalReducer';
+import { deleteHospital, fetchHospital, insertHospital, updateHospital } from './Reducer/hospitalReducer';
 import { HospitalEdit } from './HospitalEdit';
+import { HospitalInsert } from './HospitalInsert';
+import HospitalDelete from './HospitalDelete';
 
 export default function Hospital() {
     const totalPage = useSelector(state => state.Hospital.totalPage);
@@ -58,29 +60,26 @@ export default function Hospital() {
         }))
 
     }
-    const handleConfirmDeleteBloodGroup = (data) => {
+    const handleConfirmDelete = (data) => {
         dispatch(deleteHospital({
             data: data,
             token: appToken
         }));
-        dispatch(fetchHospital({
-            page: page,
-            pageSize: 20,
-            token: appToken
-        }))
+        setModalDelete(false);
+
     }
-    const handlerInsertBloodGroup = (data) => {
+    const handlerInsert = (data) => {
 
         var now = new Date();
-        data.id = valueSelected.id;
+        data.id = 0;
         data.updateBy = userCurrentData.data.userName;
         data.updateTime = now.toISOString();
         data.createBy = userCurrentData.data.userName;
         data.createUTC = now.toISOString();
-        data.urgent = false;
+
 
         // console.log(appToken);
-        dispatch(insertBloodGroup({
+        dispatch(insertHospital({
             data: data,
             token: appToken
         }));
@@ -175,7 +174,11 @@ export default function Hospital() {
                         />
                     </div>
                 </div>
-                <HospitalEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                {
+                    modalEdit && <HospitalEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                }
+                <HospitalInsert open={modalInsert} handlerConfirm={handlerInsert} handleClose={() => setModalInsert(false)} />
+                <HospitalDelete open={modalDelete} data={valueSelected} handlerConfirm={handleConfirmDelete} handleClose={() => setModalDelete(false)} />
                 {/* <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
                 <BloodGroupInsert open={modalInsert} handlerConfirm={handlerInsertBloodGroup} handleClose={() => setModalInsert(false)} />
                 <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} /> */}

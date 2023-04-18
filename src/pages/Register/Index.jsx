@@ -3,18 +3,18 @@ import DefaultLayout from '../../layout/DefaultLayout'
 import Breadcrumb from '../../components/Breadcrumb';
 import { Table, Input, Pagination, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/bloodGroudReducer';
 import { AiFillDelete, AiFillEdit, AiFillEye, AiFillPlusSquare } from "react-icons/ai";
-import BloodGroupEdit from './BloodGroupEdit';
-import BloodGroupInsert from './BloodGruopInsert';
-import BloodGroupDelete from './BloodGroupDelete';
+import { deleteRegistration, fetchRegistration, insertRegistration, updateRegistration } from './Reducer/registerReducer';
+import RegisterInsert from './RegisterInsert';
+import RegisterUpdate from './RegisterUpdate';
+import RegisterDelete from './RegisterDelete';
 
 export default function RegisterBloodBank() {
-    const totalPage = useSelector(state => state.BloodGroup.totalPage);
-    const data = useSelector(state => state.BloodGroup.data);
-    const page = useSelector(state => state.BloodGroup.page);
+    const totalPage = useSelector(state => state.Register.totalPage);
+    const data = useSelector(state => state.Register.data);
+    const page = useSelector(state => state.Register.page);
     const appToken = useSelector(state => state.SignUp.token);
-    const loading = useSelector(state => state.BloodGroup.loading);
+    const loading = useSelector(state => state.Register.loading);
     const userCurrentData = useSelector(state => state.SignUp.userResponse)
     //Modal
     const [modalView, setModalView] = useState(false);
@@ -25,6 +25,7 @@ export default function RegisterBloodBank() {
     const [valueSelected, setValueSelected] = useState({});
     //Handler
     const SeletedHandler = (value) => {
+        //  console.log(value);
         setValueSelected(value);
     }
     const HandleOpenViewModal = (data) => {
@@ -47,44 +48,45 @@ export default function RegisterBloodBank() {
         data.updateBy = userCurrentData.data.userName;
         data.updateTime = now.toISOString();
         // console.log(appToken);
-        dispatch(updateBoodGroup({
+        dispatch(updateRegistration({
             data: data,
             token: appToken
         }));
-        dispatch(fetchBloodGroup({
+        dispatch(fetchRegistration({
             page: page,
             pageSize: 20,
             token: appToken
         }))
 
     }
-    const handleConfirmDeleteBloodGroup = (data) => {
-        dispatch(deleteBloodGroup({
+    const handleConfirmDelete = (data) => {
+        dispatch(deleteRegistration({
             data: data,
             token: appToken
         }));
-        dispatch(fetchBloodGroup({
-            page: page,
-            pageSize: 20,
-            token: appToken
-        }))
+
+        setModalDelete(false)
     }
-    const handlerInsertBloodGroup = (data) => {
+    const handlerInsert = (data) => {
 
         var now = new Date();
-        data.id = valueSelected.id;
+        data.id = 0;
         data.updateBy = userCurrentData.data.userName;
         data.updateTime = now.toISOString();
         data.createBy = userCurrentData.data.userName;
         data.createUTC = now.toISOString();
-        data.urgent = false;
+        //  data.urgent = false;
 
         // console.log(appToken);
-        dispatch(insertBloodGroup({
+        dispatch(insertRegistration({
             data: data,
             token: appToken
         }));
-
+        // dispatch(fetchRegistration({
+        //     page: page,
+        //     pageSize: 20,
+        //     token: appToken
+        // }))
         setModalInsert(false);
 
     }
@@ -92,14 +94,47 @@ export default function RegisterBloodBank() {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchBloodGroup({
+        dispatch(fetchRegistration({
             page: page,
-            pageSize: 20,
+            pageSize: 10,
             token: appToken
         }))
     }, []);
     const handleChangePage = ({ pageChange }) => {
-        dispatch(changePage(pageChange))
+        dispatch(fetchRegistration({
+            page: pageChange,
+            pageSize: 10,
+            token: appToken
+        }))
+    }
+    const StatusView = ({ status }) => {
+        switch (status) {
+            case 1:
+
+                return <>
+                    <div className="p-3 bg-body rounded-md max-w-40"><p className='text-white text-center font-bold'>Just Resgister</p></div>
+                </>;
+            case 2:
+                return <>
+                    <div className="p-3 bg-warning rounded-md  max-w-40"><p className='text-white text-center font-bold'>Accept Register</p></div>
+                </>;
+            case 3:
+                return <>
+                    <div className="p-3 bg-meta-5 rounded-md  max-w-40"><p className='text-white text-center font-bold'>Processing</p></div>
+                </>;
+            case 4:
+                return <>
+                    <div className="p-3 bg-success rounded-md  max-w-40"><p className='text-white text-center font-bold'>Finish</p></div>
+                </>;
+            case 5:
+                return <>
+                    <div className="p-3 bg-danger rounded-md  max-w-40"><p className='text-white  text-center font-bold'>Reject</p></div>
+                </>;
+            default:
+                return <>
+                    <div className="p-3 bg-body rounded-md  max-w-40"><p className='text-white text-center font-bold'>Just Resgister</p></div>
+                </>;
+        }
     }
     return (
 
@@ -119,27 +154,35 @@ export default function RegisterBloodBank() {
                                     {""}
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Name
+                                    Bloodgroup
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Description
+                                    Hospital
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     Capacity (ml)
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
+                                    User Info
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    Status
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
                                     Handler
                                 </Table.HeaderCell>
-                                {/* Add other header cells */}
+
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
                             {data.map((item, index) => (
                                 <Table.Row key={item.id}>
-                                    <Table.Cell>{index + 1}</Table.Cell>
-                                    <Table.Cell>{item.name}</Table.Cell>
-                                    <Table.Cell>{item.description}</Table.Cell>
+                                    <Table.Cell>{index + ((page - 1) * 10) + 1}</Table.Cell>
+                                    <Table.Cell>{item.bloodGroup?.name}</Table.Cell>
+                                    <Table.Cell>{item.hospital?.name}</Table.Cell>
                                     <Table.Cell>{item.capacity}</Table.Cell>
+                                    <Table.Cell>{`${item.userInfo?.fullName} - ${item.userInfo.iccid}`}</Table.Cell>
+                                    <Table.Cell>{<StatusView status={item.status} />}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
                                             <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
@@ -155,7 +198,7 @@ export default function RegisterBloodBank() {
                         <Pagination
                             activePage={page}
                             totalPages={totalPage}
-                            onPageChange={(_, { activePage }) => handleChangePage(activePage)}
+                            onPageChange={(_, { activePage }) => handleChangePage({ pageChange: activePage })}
                             size="mini"
                             siblingRange={1}
                             firstItem={null}
@@ -169,6 +212,11 @@ export default function RegisterBloodBank() {
                 {/* <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
                 <BloodGroupInsert open={modalInsert} handlerConfirm={handlerInsertBloodGroup} handleClose={() => setModalInsert(false)} />
                 <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} /> */}
+                <RegisterInsert open={modalInsert} handlerConfirm={handlerInsert} handleClose={() => setModalInsert(false)} />
+                {
+                    modalEdit && <RegisterUpdate open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                }
+                <RegisterDelete open={modalDelete} data={valueSelected} handlerConfirm={handleConfirmDelete} handleClose={() => setModalDelete(false)} />
             </>
         </DefaultLayout>
     )

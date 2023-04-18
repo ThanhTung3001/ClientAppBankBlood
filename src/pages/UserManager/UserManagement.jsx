@@ -77,7 +77,7 @@ export const UserManagement = () => {
             {/* <!-- ====== Calendar Section Start ====== --> */}
             {
                 status != "loading" ? <>
-                    <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
+                    <div className='w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5'>
                         <Table celled>
                             <Table.Header>
                                 <Table.Row>

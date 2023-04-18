@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { GetWithToken, PutWithToken, PostWithToken, DeleteWithToken } from "../../../app/api/apiMethod";
+import { toast } from "react-toastify";
 
 
 const initialState = {
@@ -31,7 +32,10 @@ export const insertHospital = createAsyncThunk('Hospital/HospitalInsert', async 
 });
 
 export const deleteHospital = createAsyncThunk('Hospital/HospitalDelete', async ({ data, token }) => {
+
+    console.log({ data, token });
     var { data } = await DeleteWithToken({ url: `/api/Hospital/${data.id}`, token });
+    console.log(data);
     return data;
 })
 
@@ -75,7 +79,6 @@ const HospitalSlice = createSlice({
             state.data = state.data.filter(e => {
                 return e.id != action.payload.data
             })
-
         })
         builder.addCase(deleteHospital.rejected, (state, action) => {
             state.loading = false;

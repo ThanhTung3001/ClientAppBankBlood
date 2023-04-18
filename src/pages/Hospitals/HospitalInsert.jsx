@@ -10,11 +10,11 @@ import axios from 'axios';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const Marker = ({ text }) => <div className="marker">{<MdLocationOn color='#DC4C64' size={32} />}</div>;
-export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
+export const HospitalInsert = ({ open, data, handleClose, handlerConfirm }) => {
     const InsertSchema = Yup.object().shape({
         name: Yup.string().required('Name is required').min(5, 'Too short').max(50, 'too long'),
         address: Yup.string().required('Address is required').min(6, 'Too short').max(50, 'too long'),
-        phoneNumber: Yup.number().required('Capacity is required')
+        phoneNumber: Yup.string().required('Capacity is required')
     });
     const [dataFetch, setDataFetch] = useState([]);
     const [selectedDistrist, setSelectedDistrist] = useState({});
@@ -24,13 +24,13 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
 
 
     const [marker, setMarker] = useState({
-        lat: data.lat,
-        lng: data.long
+        lat: 16.368563,
+        lng: 107.2735872
     });
     const defaultProps = {
         center: {
-            lat: data.lat,
-            lng: data.long
+            lat: 16.368563,
+            lng: 107.2735872
         },
         zoom: 11
     };
@@ -85,9 +85,9 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                         <Formik
                             initialValues={
                                 {
-                                    name: data.name,
-                                    address: data.address,
-                                    phoneNumber: data.phoneNumber
+                                    name: '',
+                                    address: '',
+                                    phoneNumber: ''
                                 }
                             }
                             validationSchema={InsertSchema}
@@ -99,7 +99,7 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                                     lat: marker.lat,
                                     long: marker.lng
                                 }
-                                console.log(values);
+                                handlerConfirm(values);
                             }}
                         >
                             {
@@ -156,7 +156,7 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                                                                 <div className='relative'>
                                                                     <Field
                                                                         name="phoneNumber"
-                                                                        type="number"
+                                                                        type="text"
                                                                         // value={data.capacity}
                                                                         placeholder='PhoneNumber'
 
@@ -194,7 +194,7 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                                                                 </div>
                                                             </div> */}
 
-                                                            {/* <div>
+                                                            <div>
                                                                 <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
                                                                     Districts
                                                                 </label>
@@ -210,7 +210,7 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                                                                 <div className="relative">
                                                                     <Select options={wards} required onChange={(e) => { setSelectedWard(e.label) }} />
                                                                 </div>
-                                                            </div> */}
+                                                            </div>
                                                             <div>
                                                                 <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
                                                                     Addresss

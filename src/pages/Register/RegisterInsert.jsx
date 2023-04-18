@@ -31,19 +31,14 @@ const options = [
     },
 ]
 
-export default function RegisterUpdate({ open, data, handleClose, handlerConfirm }) {
-    console.log(data);
-    console.log(`${data.userInfo?.fullName} - ${data.userInfo?.iccid}`);
-    var initStatus = options.filter(e => {
-        return e.value === data.status;
-    })[0];
+export default function RegisterInsert({ open, handleClose, handlerConfirm }) {
 
     const AppToken = useSelector(state => state.SignUp.token);
     //Selected
-    const [bloodGroupsSelected, setBloogGroupsSelected] = useState({ label: data.bloodGroup?.name, value: data.bloodGroupId });
-    const [hospitalsSelected, setHospitalsSelected] = useState({ label: data.hospital?.name, value: data.hospitalId });
-    const [userInfoSelected, setUserInfoSelected] = useState({ label: `${data.userInfo?.fullName} - ${data.userInfo?.iccid}`, value: data.userId });
-    const [status, setStatus] = useState(initStatus);
+    const [bloodGroupsSelected, setBloogGroupsSelected] = useState(1);
+    const [hospitalsSelected, setHospitalsSelected] = useState(1);
+    const [userInfoSelected, setUserInfoSelected] = useState(1);
+    const [status, setStatus] = useState(1);
 
     //List data
     const [bloodGroups, setBloogGroups] = useState([]);
@@ -80,7 +75,8 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
             )));
     }, [])
 
-    const nextDate = new Date(Date.now() + 86400000);
+    const nextDate = new Date(Date.now() + (86400000 * 2));
+
 
     const InsertSchema = Yup.object().shape({
         capacity: Yup.number().required('Capacity is required'),
@@ -97,8 +93,8 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
                         <Formik
                             initialValues={
                                 {
-                                    capacity: data.capacity,
-                                    registerTime: moment(data.registerTime, "YYYY-MM-DDTHH:mm:ss").format('YYYY-MM-DD'),
+                                    capacity: '',
+                                    registerTime: moment(nextDate, "YYYY-MM-DDTHH:mm:ss").format('YYYY-MM-DD'),
 
                                 }
                             }
@@ -107,9 +103,9 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
 
                                 values = {
                                     ...values,
-                                    hospitalId: hospitalsSelected.value,
-                                    bloodGroupId: bloodGroupsSelected.value,
-                                    userId: userInfoSelected.value,
+                                    hospitalId: hospitalsSelected,
+                                    bloodGroupId: bloodGroupsSelected,
+                                    userId: userInfoSelected,
                                     status: status.value
                                 }
                                 handlerConfirm(values);
@@ -145,7 +141,7 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
                                                                     BloodGroup
                                                                 </label>
                                                                 <div className='relative'>
-                                                                    <Select options={bloodGroups} required onChange={(e) => { setBloogGroupsSelected(e) }} value={bloodGroupsSelected} />
+                                                                    <Select options={bloodGroups} required onChange={(e) => { setBloogGroupsSelected(e.value) }} />
                                                                     <div>
                                                                     </div>
                                                                 </div>
@@ -155,7 +151,7 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
                                                                     Hospital
                                                                 </label>
                                                                 <div className='relative'>
-                                                                    <Select options={hospitals} required onChange={(e) => { setHospitalsSelected(e) }} value={hospitalsSelected} />
+                                                                    <Select options={hospitals} required onChange={(e) => { setHospitalsSelected(e.value) }} />
                                                                     <div>
                                                                     </div>
                                                                 </div>
@@ -165,7 +161,7 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
                                                                     User
                                                                 </label>
                                                                 <div className='relative'>
-                                                                    <Select options={userInfo} required onChange={(e) => setUserInfoSelected(e)} value={userInfoSelected} />
+                                                                    <Select options={userInfo} required onChange={(e) => setUserInfoSelected(e.value)} />
                                                                     <div>
                                                                     </div>
                                                                 </div>
@@ -227,7 +223,7 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
                                                                             setStatus(e)
                                                                         }}
 
-                                                                        value={status}
+                                                                    // value={status}
                                                                     />
                                                                     <div>
                                                                     </div>
