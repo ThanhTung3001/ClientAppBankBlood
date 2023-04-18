@@ -152,3 +152,7 @@ span.flatpickr-weekday,
 .ui.table{
   margin-bottom: 0px !important;
 }
+label[for="file"]{
+  max-width: 100%;
+  height: 64px;
+}

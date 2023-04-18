@@ -79,7 +79,7 @@ export default function RegisterInsert({ open, handleClose, handlerConfirm }) {
 
 
     const InsertSchema = Yup.object().shape({
-        capacity: Yup.number().required('Capacity is required'),
+        capacity: Yup.number().required('Capacity is required').min(50,"Capacity not smaller 50ml"),
         registerTime: Yup.date().required('Date register Required').min(nextDate, "The blood donation schedule must be held after today"),
         // status: Yup.number().required('Status is requerid').min(1, 'Must include: Register, Accept, Processing, Finish').max(4, 'Must include: Register, Accept, Processing, Finish')
     });

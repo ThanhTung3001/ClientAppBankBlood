@@ -55,7 +55,8 @@ export default function BloodGroup() {
             page: page,
             pageSize: 20,
             token: appToken
-        }))
+        }));
+        setModalEdit(false)
 
     }
     const handleConfirmDeleteBloodGroup = (data) => {
@@ -68,6 +69,7 @@ export default function BloodGroup() {
             pageSize: 20,
             token: appToken
         }))
+        setModalDelete(false);
     }
     const handlerInsertBloodGroup = (data) => {
 

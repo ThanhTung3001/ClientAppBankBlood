@@ -20,6 +20,8 @@ import BloodGroup from './pages/BloodGroup/Index'
 import { Forbidden } from './pages/403/Index'
 import Hospital from './pages/Hospitals/Index'
 import RegisterBloodBank from './pages/Register/Index'
+import Category from './pages/Category/Index'
+import Blog from './pages/Blogs/Index'
 
 
 const App = () => {
@@ -74,7 +76,11 @@ const App = () => {
           <Route path='/admin/bloodgroups' element={<ProtectedRoute auth={auth} children={<BloodGroup />} userInfo={userInfo} />} />
           <Route path='/admin/hospitals' element={<ProtectedRoute auth={auth} children={<Hospital />} userInfo={userInfo} />} />
           <Route path='/admin/registers' element={<ProtectedRoute auth={auth} children={<RegisterBloodBank />} userInfo={userInfo} />} />
-        </Routes>
+          <Route path='/admin/post/categories' element={<ProtectedRoute auth={auth} children={<Category />} userInfo={userInfo} />} />
+          <Route path='/admin/post/blogs' element={<ProtectedRoute auth={auth} children={<Blog />} userInfo={userInfo} />} />
+          <Route path='/admin/profile' element={<ProtectedRoute auth={auth} children={<Profile />} userInfo={userInfo} />} />
+          {/* /admin/profile   */}
+           </Routes>
       </>
     )
   )

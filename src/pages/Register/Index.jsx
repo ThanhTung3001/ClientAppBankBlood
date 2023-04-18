@@ -57,6 +57,14 @@ export default function RegisterBloodBank() {
             pageSize: 20,
             token: appToken
         }))
+        setTimeout(()=>{
+            dispatch(fetchRegistration({
+                page: page,
+                pageSize: 10,
+                token: appToken
+            }))
+           },3000);
+           setModalEdit(false)
 
     }
     const handleConfirmDelete = (data) => {
@@ -88,6 +96,13 @@ export default function RegisterBloodBank() {
         //     token: appToken
         // }))
         setModalInsert(false);
+        setTimeout(()=>{
+            dispatch(fetchRegistration({
+                page: page,
+                pageSize: 10,
+                token: appToken
+            }))
+           },3000)
 
     }
 

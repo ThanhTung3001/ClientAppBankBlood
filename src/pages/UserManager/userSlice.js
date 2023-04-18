@@ -9,8 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 const initialState = {
     users:[],
     status:'init',
-    statusUpdate:'init'
+    statusUpdate:'init',
+    MyInfo:{},
+    loadingInfo:false
 };
+
+export const fetchMyInfo = createAsyncThunk("user/fetchMyInfo",async(token)=>{
+   
+    var {data} = await GetWithToken({url:`/api/Account/getMe`,token:token});
+    console.log(data);
+    return data;
+})
 
 export const FetchUserAsync = createAsyncThunk("user/fetchUsers",async(token)=>{
     // console.log(token);
@@ -43,6 +52,16 @@ const userSlice =  createSlice({
             state.status = 'success';
           
             state.users = action.payload;
+            // console.log(action.payload);
+        })
+        builder.addCase(fetchMyInfo.pending,(state,action)=>{
+            state.loadingInfo = true;
+         
+        })
+        builder.addCase(fetchMyInfo.fulfilled,(state,action)=>{
+            state.loadingInfo = false;
+          
+            state.MyInfo = action.payload.data;
             // console.log(action.payload);
         })
         builder.addCase(FetchUserAsync.rejected,(state,action)=>{

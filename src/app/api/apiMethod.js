@@ -65,3 +65,18 @@ export const DeleteWithToken = async ({ url, body, token }) => {
 
   return response;
 }
+
+export const PostFileWithToken = async ({ url, token, file }) => {
+
+  var data = new FormData()
+  data.append('image',file,file.name);
+  data.append('name', 'ABC');   //append the values with key, value pair
+  data.append('age', 20);
+  var response = await axios.post(`${BASE_URL}${url}`, data, {
+    headers: {
+      'Authorization': token,
+      "Content-Type": "multipart/form-data"
+    },
+  });
+  return response;
+}

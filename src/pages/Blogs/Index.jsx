@@ -3,19 +3,24 @@ import DefaultLayout from '../../layout/DefaultLayout'
 import Breadcrumb from '../../components/Breadcrumb';
 import { Table, Input, Pagination, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/hospitalReducer';
+// import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/BlogReducer';
 import { AiFillDelete, AiFillEdit, AiFillEye, AiFillPlusSquare } from "react-icons/ai";
-import { deleteHospital, fetchHospital, insertHospital, updateHospital } from './Reducer/hospitalReducer';
-import { HospitalEdit } from './HospitalEdit';
-import { HospitalInsert } from './HospitalInsert';
-import HospitalDelete from './HospitalDelete';
+import { deleteBlog, fetchBlog, insertBlog, updateBlog } from './Reducer/blogReducer';
+// import { BlogEdit } from './BlogEdit';
+import { BlogInsert } from './BlogInsert';
+// import {BlogDelete} from './BlogDelete';
+import { PostFileWithToken } from '../../app/api/apiMethod';
+import { toast } from 'react-toastify';
+import moment from 'moment';
+import { BlogUpdate } from './BlogUpdate';
+import { BlogDelete } from './BlogDelete';
 
-export default function Hospital() {
-    const totalPage = useSelector(state => state.Hospital.totalPage);
-    const data = useSelector(state => state.Hospital.data);
-    const page = useSelector(state => state.Hospital.page);
+export default function Blog() {
+    const totalPage = useSelector(state => state.Blog.totalPage);
+    const data = useSelector(state => state.Blog.data);
+    const page = useSelector(state => state.Blog.page);
     const appToken = useSelector(state => state.SignUp.token);
-    const loading = useSelector(state => state.Hospital.loading);
+    const loading = useSelector(state => state.Blog.loading);
     const userCurrentData = useSelector(state => state.SignUp.userResponse)
     //Modal
     const [modalView, setModalView] = useState(false);
@@ -43,33 +48,51 @@ export default function Hospital() {
         setModalDelete(true);
     }
 
-    const handlerConfirmEdit = (data) => {
+    const handlerConfirmEdit = (data, file) => {
         var now = new Date();
         data.id = valueSelected.id;
         data.updateBy = userCurrentData.data.userName;
         data.updateTime = now.toISOString();
-        // console.log(appToken);
-        dispatch(updateHospital({
-            data: data,
-            token: appToken
-        }));
-        dispatch(fetchHospital({
-            page: page,
-            pageSize: 20,
-            token: appToken
-        }));
+        if (file != null) {
+            PostFileWithToken({ url: '/api/Upload/Images', token: appToken, file: file })
+                .then(rs => {
+                    if (rs.status == 200) {
+                        var pathFile = rs.data.data.path;
+                        data.avatar = pathFile;
+                        dispatch(updateBlog({
+                            data: data,
+                            token: appToken
+                        }));
+                        setModalInsert(false);
+                    } else {
+                        toast.error('Update Blog Fail')
+                    }
+                })
+        } else {
+            dispatch(updateBlog({
+                data: data,
+                token: appToken
+            }));
             setModalEdit(false);
+        }
 
+        setTimeout(()=>{
+            dispatch(fetchBlog({
+                page: page,
+                pageSize: 20,
+                token: appToken
+            }))
+           },3000)
     }
     const handleConfirmDelete = (data) => {
-        dispatch(deleteHospital({
+        dispatch(deleteBlog({
             data: data,
             token: appToken
         }));
         setModalDelete(false);
 
     }
-    const handlerInsert = (data) => {
+    const handlerInsert = (data, file) => {
 
         var now = new Date();
         data.id = 0;
@@ -77,23 +100,42 @@ export default function Hospital() {
         data.updateTime = now.toISOString();
         data.createBy = userCurrentData.data.userName;
         data.createUTC = now.toISOString();
-
-
-        // console.log(appToken);
-        dispatch(insertHospital({
-            data: data,
+        if (file != null) {
+            PostFileWithToken({ url: '/api/Upload/Images', token: appToken, file: file })
+                .then(rs => {
+                    if (rs.status == 200) {
+                        var pathFile = rs.data.data.path;
+                        data.avatar = pathFile;
+                        dispatch(insertBlog({
+                            data: data,
+                            token: appToken
+                        }));
+                        setModalInsert(false);
+                    } else {
+                        toast.error('Insert Blog Fail')
+                    }
+                })
+        } else {
+            dispatch(insertBlog({
+                data: data,
+                token: appToken
+            }));
+            setModalInsert(false);
+        }
+       setTimeout(()=>{
+        dispatch(fetchBlog({
+            page: page,
+            pageSize: 20,
             token: appToken
-        }));
-
-        setModalInsert(false);
+        }))
+       },3000)
+        // console.log(appToken);
 
     }
 
-
-
     useEffect(() => {
 
-        dispatch(fetchHospital({
+        dispatch(fetchBlog({
             page: page,
             pageSize: 20,
             token: appToken
@@ -105,12 +147,12 @@ export default function Hospital() {
     return (
 
         <DefaultLayout>
-            <Breadcrumb pageName='Hospital' />
+            <Breadcrumb pageName='Blog' />
             <>
                 <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-3'>
                     <div className="flex flex-row justify-end">
-                        <div className="flex w-[50px] justify-center rounded bg-primary m-3 mr-4 mb-0 p-3 font-medium text-gray">
-                            <AiFillPlusSquare size={16} onClick={() => setModalInsert(true)} />
+                        <div onClick={() => setModalInsert(true)} className="flex w-[50px] justify-center rounded bg-primary m-3 mr-4 mb-0 p-3 font-medium text-gray">
+                            <AiFillPlusSquare size={16} />
                         </div>
                     </div>
                     <Table celled loading={loading.toString()} className='mb-0'>
@@ -120,16 +162,20 @@ export default function Hospital() {
                                     {""}
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Name
+                                    Title
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Addresss
+                                    Description
+                                </Table.HeaderCell>
+
+                                <Table.HeaderCell>
+                                    Category
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Phone Number
+                                    View Count
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Location
+                                    Public Time
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     Handler
@@ -141,14 +187,11 @@ export default function Hospital() {
                             {data.map((item, index) => (
                                 <Table.Row key={item.id}>
                                     <Table.Cell>{index + 1}</Table.Cell>
-                                    <Table.Cell>{item.name}</Table.Cell>
-                                    <Table.Cell>{item.address}</Table.Cell>
-                                    <Table.Cell>{item.phoneNumber}</Table.Cell>
-                                    <Table.Cell>
-                                        - Lat : {item.lat}
-                                        <br></br>
-                                        - Long : {item.long}
-                                    </Table.Cell>
+                                    <Table.Cell>{item.title}</Table.Cell>
+                                    <Table.Cell>{item.description}</Table.Cell>
+                                    <Table.Cell>{item.category?.name}</Table.Cell>
+                                    <Table.Cell>{item.viewCount}</Table.Cell>
+                                    <Table.Cell>{moment(new Date(item.publicTime)).format('DD/MM/YYYY')}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
                                             <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
@@ -175,14 +218,13 @@ export default function Hospital() {
                         />
                     </div>
                 </div>
+
+
+                <BlogInsert open={modalInsert} handlerConfirm={handlerInsert} handleClose={() => setModalInsert(false)} />
+                <BlogDelete open={modalDelete} data={valueSelected} handlerConfirm={handleConfirmDelete} handleClose={() => setModalDelete(false)} />
                 {
-                    modalEdit && <HospitalEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                    modalEdit && <BlogUpdate open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
                 }
-                <HospitalInsert open={modalInsert} handlerConfirm={handlerInsert} handleClose={() => setModalInsert(false)} />
-                <HospitalDelete open={modalDelete} data={valueSelected} handlerConfirm={handleConfirmDelete} handleClose={() => setModalDelete(false)} />
-                {/* <BloodGroupEdit open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
-                <BloodGroupInsert open={modalInsert} handlerConfirm={handlerInsertBloodGroup} handleClose={() => setModalInsert(false)} />
-                <BloodGroupDelete open={modalDelete} handlerConfirm={handleConfirmDeleteBloodGroup} handleClose={() => setModalDelete(false)} data={valueSelected} /> */}
             </>
         </DefaultLayout>
     )

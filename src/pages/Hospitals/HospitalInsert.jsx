@@ -123,7 +123,7 @@ export const HospitalInsert = ({ open, data, handleClose, handlerConfirm }) => {
                                                     </button>
                                                 </div>
                                                 {/*body*/}
-                                                <div className="relative p-6 flex-auto">
+                                                <div className="relative p-6 flex-auto max-h-125 overflow-y-scroll">
                                                     <div className="flex flex-row justify-center">
 
                                                         <div className="label w-full">

@@ -99,7 +99,8 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                                     lat: marker.lat,
                                     long: marker.lng
                                 }
-                                console.log(values);
+                                handlerConfirm(values);
+
                             }}
                         >
                             {
@@ -123,7 +124,7 @@ export const HospitalEdit = ({ open, data, handleClose, handlerConfirm }) => {
                                                     </button>
                                                 </div>
                                                 {/*body*/}
-                                                <div className="relative p-6 flex-auto">
+                                                <div className="relative p-6 flex-auto max-h-125 overflow-y-scroll">
                                                     <div className="flex flex-row justify-center">
 
                                                         <div className="label w-full">
