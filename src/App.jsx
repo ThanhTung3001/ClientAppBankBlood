@@ -15,13 +15,27 @@ import SignUp from './pages/Authentication/SignUp'
 import { UserManagement } from './pages/UserManager/UserManagement';
 import { useSelector, useDispatch } from 'react-redux';
 import { initToken, initUserInfo } from './pages/Authentication/signupSlice'
-import HomePage from './pages/Home/Index'
+// import { HomePage } from './pages/Home/Index'
 import BloodGroup from './pages/BloodGroup/Index'
 import { Forbidden } from './pages/403/Index'
 import Hospital from './pages/Hospitals/Index'
 import RegisterBloodBank from './pages/Register/Index'
 import Category from './pages/Category/Index'
-import Blog from './pages/Blogs/Index'
+// import Blog from './pages/Blogs/Index'
+import { Header } from './components/Layout/Header';
+import { Footer } from './components/Layout/Footer'
+import { About } from './pages/about'
+import { Campaing } from './pages/campaings'
+import Blog from './pages/Blog/Index'
+// import Footer from './components/Layout/Footer'
+import {HomePage} from './pages/home/index';
+
+import { BaseBlog } from './pages/BaseBlog'
+import { Contact } from './pages/home/Contact'
+import { motion, useScroll } from "framer-motion"
+import { IoIosArrowUp } from 'react-icons/io'
+import { BlogDetail } from './pages/BaseBlog/BlogDetail'
+import Event from './pages/Event/Index'
 
 
 const App = () => {
@@ -53,13 +67,17 @@ const App = () => {
     if (Info != null) {
       dispatch(initUserInfo(JSON.parse(Info)))
     }
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }, [])
 
   return (
     !loading && (
       <>
         <Routes>
-          <Route exact path='/admin' element={<Analytics />} />
+          <Route exact path='/admin' element={<ProtectedRoute auth={auth} children={<Analytics />} userInfo={userInfo} />} />
           {/* <PrivateRoute isAuthenticated={auth} path='/calendar' element={<Calendar />} /> */}
           <Route path='/profile' element={<Profile />} />
           <Route path='/forms/form-elements' element={<FormElements />} />
@@ -71,16 +89,24 @@ const App = () => {
           <Route path='/ui/buttons' element={<Buttons />} />
           <Route path='/auth/signin' element={<SignIn />} />
           <Route path='/auth/signup' element={<SignUp />} />
-          <Route path='/' element={<HomePage />} />
+
           <Route path='/admin/users' element={<ProtectedRoute auth={auth} children={<UserManagement />} userInfo={userInfo} />} />
           <Route path='/admin/bloodgroups' element={<ProtectedRoute auth={auth} children={<BloodGroup />} userInfo={userInfo} />} />
           <Route path='/admin/hospitals' element={<ProtectedRoute auth={auth} children={<Hospital />} userInfo={userInfo} />} />
           <Route path='/admin/registers' element={<ProtectedRoute auth={auth} children={<RegisterBloodBank />} userInfo={userInfo} />} />
           <Route path='/admin/post/categories' element={<ProtectedRoute auth={auth} children={<Category />} userInfo={userInfo} />} />
           <Route path='/admin/post/blogs' element={<ProtectedRoute auth={auth} children={<Blog />} userInfo={userInfo} />} />
+          <Route path='/admin/events' element={<ProtectedRoute auth={auth} children={<Event />} userInfo={userInfo} />} />
           <Route path='/admin/profile' element={<ProtectedRoute auth={auth} children={<Profile />} userInfo={userInfo} />} />
+          {/* basepage */}
+          <Route path='/' element={<BasePage children={<HomePage />} />} />
+          <Route path='/about' element={<BasePage children={<About />} />} />
+          <Route path='/campaing' element={<BasePage children={<Campaing />} />} />
+          <Route path='/contact' element={<BasePage children={<Contact />} />} />
+          <Route path='/blogs' element={<BasePage children={<BaseBlog />} />} />
+          <Route path='/blogs/:id' element={<BasePage children={<BlogDetail />} />} />
           {/* /admin/profile   */}
-           </Routes>
+        </Routes>
       </>
     )
   )
@@ -102,3 +128,35 @@ const ProtectedRoute = ({ auth, children, userInfo, role = "Admin" }) => {
 
   return children;
 };
+
+
+const BasePage = ({ children }) => {
+  const { scrollYProgress } = useScroll();
+  const [visible, setVisible] = useState(false);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+  const handleScroll = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    setVisible(scrollTop > 0);
+  };
+  window.addEventListener('scroll', handleScroll);
+  return <>
+    <motion.div
+        className="progress-bar"
+        style={{ scaleX: scrollYProgress }}
+      />
+    <Header />
+    {children}
+    <Footer />
+    <button
+        className={`scroll-to-top ${visible ? 'visible' : ''}`}
+        onClick={scrollToTop}
+      >
+        <IoIosArrowUp size={32} />
+      </button>
+  </>
+}

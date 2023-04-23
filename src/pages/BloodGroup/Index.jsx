@@ -8,6 +8,7 @@ import { AiFillDelete, AiFillEdit, AiFillEye, AiFillPlusSquare } from "react-ico
 import BloodGroupEdit from './BloodGroupEdit';
 import BloodGroupInsert from './BloodGruopInsert';
 import BloodGroupDelete from './BloodGroupDelete';
+import { toVNNumber } from '../../hooks/useNumber';
 
 export default function BloodGroup() {
     const totalPage = useSelector(state => state.BloodGroup.totalPage);
@@ -141,7 +142,7 @@ export default function BloodGroup() {
                                     <Table.Cell>{index + 1}</Table.Cell>
                                     <Table.Cell>{item.name}</Table.Cell>
                                     <Table.Cell>{item.description}</Table.Cell>
-                                    <Table.Cell>{item.capacity}</Table.Cell>
+                                    <Table.Cell>{toVNNumber(item.capacity)}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
                                             <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />

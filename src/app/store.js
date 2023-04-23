@@ -5,7 +5,9 @@ import bloodGroudReducer from "../pages/BloodGroup/Reducer/bloodGroudReducer";
 import hospitalReducer from "../pages/Hospitals/Reducer/hospitalReducer";
 import registerReducer from "../pages/Register/Reducer/registerReducer";
 import categoryReducer from "../pages/Category/reducer/categoryReducer";
-import blogReducer from "../pages/Blogs/Reducer/blogReducer";
+import blogReducer from "../pages/Blog/Reducer/blogReducer";
+import EventReducer from "../pages/Event/Reducer/EventReducer";
+// import blogReducer from "../pages/Blogs/Reducer/blogReducer";
 
 export default configureStore({
     reducer: {
@@ -15,6 +17,7 @@ export default configureStore({
         Hospital: hospitalReducer,
         Register: registerReducer,
         Category:categoryReducer,
-        Blog:blogReducer
+        Blog:blogReducer,
+        Event:EventReducer
     }
 })

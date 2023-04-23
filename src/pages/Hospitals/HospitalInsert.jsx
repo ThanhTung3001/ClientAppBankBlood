@@ -111,7 +111,7 @@ export const HospitalInsert = ({ open, data, handleClose, handlerConfirm }) => {
                                                 {/*header*/}
                                                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t border-b-1 border-gray">
                                                     <h3 className="text-3xl font-semibold text-black">
-                                                        BloodGroup Insert
+                                                    Hospital Insert
                                                     </h3>
                                                     <button
                                                         className="p-1 ml-auto bg-transparent border-0 text- bg-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"

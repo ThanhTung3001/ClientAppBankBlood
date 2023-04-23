@@ -55,7 +55,7 @@ const SignUpSlice = createSlice({
             state.response = action.payload;
             toast.success("Register success, please check mail confirm your account");
             setTimeout(() => {
-                window.location.href = "/";
+                window.location.href = "/auth/signup";
             }, 3000)
         })
         builder.addCase(signInAsync.fulfilled, (state, action) => {
@@ -66,8 +66,13 @@ const SignUpSlice = createSlice({
             localStorage.setItem("UserInfo", JSON.stringify(action.payload));
             localStorage.setItem("Token", `Bearer ${action.payload.data.jwToken}`);
             state.auth = true;
+            
             setTimeout(() => {
-                window.location.href = "/";
+                if(action.payload.data.roles.includes("Admin")){
+                    window.location.href = "/admin";
+                }else{
+                    window.location.href = "/";
+                }
             }, 3000)
         })
         builder.addCase(signUpAsync.rejected, (state, action) => {

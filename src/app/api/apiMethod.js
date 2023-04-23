@@ -8,6 +8,8 @@ import { BASE_URL } from "../../BaseUrl";
 
 export const PostWithToken = async ({ url, body, token }) => {
   // const token = useSelector(state=>state.SignUp.token);
+  console.log(`${BASE_URL}${url}`);
+try {
   var response = await axios.post(`${BASE_URL}${url}`, body, {
     headers: {
       'Authorization': token
@@ -15,6 +17,9 @@ export const PostWithToken = async ({ url, body, token }) => {
 
   });
   return response;
+} catch (error) {
+    console.log(error);
+}
 }
 export const PutWithToken = async ({ url, body, token }) => {
 

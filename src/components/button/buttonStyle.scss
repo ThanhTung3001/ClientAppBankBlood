@@ -1,0 +1,19 @@
+@import '../../scss/variable';
+.btn {
+    border-radius: 16px 0px 16px 16px;
+    padding:8px 16px;
+    max-width: fit-content;
+    transition: all 0.5s ease-in-out;
+}
+.btn-primary:hover{
+    background-color: $secondaryColor !important;
+    color: white !important;
+}
+.btn:hover{
+    transform: scale(1.05) !important;
+}
+@media only screen and (max-width: 665px) {
+   .btn{
+    font-size: 14px;
+   }
+  }

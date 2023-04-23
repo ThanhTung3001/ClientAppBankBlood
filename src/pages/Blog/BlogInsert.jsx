@@ -50,8 +50,8 @@ function uploadAdapter(loader, AppToken) {
 const fileTypes = ["JPG", "PNG", "GIF"];
 export const BlogInsert = ({ open, data, handleClose, handlerConfirm }) => {
     const InsertSchema = Yup.object().shape({
-        title: Yup.string().required('Name is required').min(5, 'Too short').max(50, 'too long'),
-        description: Yup.string().required('Description is required').min(10, 'Too short').max(200, 'too long'),
+        title: Yup.string().required('Name is required').min(5, 'Too short').max(200, 'too long'),
+        description: Yup.string().required('Description is required').min(10, 'Too short').max(500, 'too long'),
         publicTime: Yup.date()
             .required('Public time is required')
             .min(new Date(), 'Public time must be after or equal to today')

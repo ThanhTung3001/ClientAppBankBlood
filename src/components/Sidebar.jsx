@@ -3,7 +3,8 @@ import { NavLink, useLocation } from 'react-router-dom'
 import SidebarLinkGroup from './SidebarLinkGroup'
 import Logo from '../images/logo/logo.svg';
 import { AiFillNotification, AiOutlineUsergroupAdd } from "react-icons/ai";
-import { BiDonateBlood } from 'react-icons/bi';
+import { BiCalendarEvent, BiDonateBlood } from 'react-icons/bi';
+import './component.scss'
 import { MdBloodtype, MdGroup, MdLocalHospital } from "react-icons/md";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -54,7 +55,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   }, [sidebarExpanded])
 
   return (
-    <aside
+    <aside  
+      id='sidebar'
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
@@ -98,11 +100,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               MENU
             </h3>
 
-            <ul className='mb-6 flex flex-col gap-1.5'>
+            <ul className='mb-6 flex flex-col gap-1.5 items-start'>
               {/* <!-- Menu Item Dashboard --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/' || pathname.includes('dashboard')
+                  pathname === '/admin' || pathname.includes('dashboard')
                 }
               >
                 {(handleClick, open) => {
@@ -169,10 +171,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6 items-start '>
                           <li>
                             <NavLink
-                              to='/'
+                              to='/admin'
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
@@ -190,7 +192,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               </SidebarLinkGroup>
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/' || pathname.includes('dashboard')
+                  pathname === '/admin' || pathname.includes('dashboard')
                 }
               >
                 {(handleClick, open) => {
@@ -233,7 +235,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6 items-start'>
                           <li>
                             <NavLink
                               to='/admin/users'
@@ -247,7 +249,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
-                              to='/'
+                              to='/roles'
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
@@ -308,7 +310,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6 items-start'>
                           <li>
                             <NavLink
                               to='/admin/post/categories'
@@ -340,7 +342,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }}
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
-
+              <li>
+                <NavLink
+                  to='/admin/events'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('calendar') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  <BiCalendarEvent />
+                  Events
+                </NavLink>
+              </li>
               {/* <!-- Menu Item Calendar --> */}
               <li>
                 <NavLink
@@ -479,7 +491,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6 items-start'>
                           <li>
                             <NavLink
                               to='/forms/form-elements'
@@ -715,7 +727,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6 items-start'>
                           <li>
                             <NavLink
                               to='/ui/alerts'
@@ -820,7 +832,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6 items-start'>
                           <li>
                             <NavLink
                               to='/auth/signin'

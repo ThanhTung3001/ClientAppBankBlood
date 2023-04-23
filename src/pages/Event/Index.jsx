@@ -3,24 +3,25 @@ import DefaultLayout from '../../layout/DefaultLayout'
 import Breadcrumb from '../../components/Breadcrumb';
 import { Table, Input, Pagination, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/BlogReducer';
+// import { changePage, deleteBloodGroup, fetchBloodGroup, insertBloodGroup, updateBoodGroup } from './Reducer/EventReducer';
 import { AiFillDelete, AiFillEdit, AiFillEye, AiFillPlusSquare } from "react-icons/ai";
-import { deleteBlog, fetchBlog, insertBlog, updateBlog } from './Reducer/blogReducer';
-// import { BlogEdit } from './BlogEdit';
-import { BlogInsert } from './BlogInsert';
-// import {BlogDelete} from './BlogDelete';
+import { deleteEvent, fetchEvent, insertEvent, updateEvent } from './Reducer/EventReducer';
+// import { EventEdit } from './EventEdit';
+// import { EventInsert } from './EventInsert';
+// import {EventDelete} from './EventDelete';
 import { PostFileWithToken } from '../../app/api/apiMethod';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-import { BlogUpdate } from './BlogUpdate';
-import { BlogDelete } from './BlogDelete';
+import { EventUpdate } from './EventUpdate';
+import { EventDelete } from './EventDelete';
+import { EventInsert } from './EventInsert';
 
-export default function Blog() {
-    const totalPage = useSelector(state => state.Blog.totalPage);
-    const data = useSelector(state => state.Blog.data);
-    const page = useSelector(state => state.Blog.page);
+export default function Event() {
+    const totalPage = useSelector(state => state.Event.totalPage);
+    const data = useSelector(state => state.Event.data);
+    const page = useSelector(state => state.Event.page);
     const appToken = useSelector(state => state.SignUp.token);
-    const loading = useSelector(state => state.Blog.loading);
+    const loading = useSelector(state => state.Event.loading);
     const userCurrentData = useSelector(state => state.SignUp.userResponse)
     //Modal
     const [modalView, setModalView] = useState(false);
@@ -59,25 +60,27 @@ export default function Blog() {
                     if (rs.status == 200) {
                         var pathFile = rs.data.data.path;
                         data.avatar = pathFile;
-                        dispatch(updateBlog({
+                        dispatch(updateEvent({
                             data: data,
                             token: appToken
                         }));
                         setModalInsert(false);
                     } else {
-                        toast.error('Update Blog Fail')
+                        toast.error('Update Event Fail')
                     }
                 })
         } else {
-            dispatch(updateBlog({
+            data.avatar = valueSelected.avatar;
+            dispatch(updateEvent({
                 data: data,
                 token: appToken
             }));
-            setModalEdit(false);
+            
         }
+        setModalEdit(false);
 
         setTimeout(()=>{
-            dispatch(fetchBlog({
+            dispatch(fetchEvent({
                 page: page,
                 pageSize: 20,
                 token: appToken
@@ -85,7 +88,7 @@ export default function Blog() {
            },3000)
     }
     const handleConfirmDelete = (data) => {
-        dispatch(deleteBlog({
+        dispatch(deleteEvent({
             data: data,
             token: appToken
         }));
@@ -106,24 +109,25 @@ export default function Blog() {
                     if (rs.status == 200) {
                         var pathFile = rs.data.data.path;
                         data.avatar = pathFile;
-                        dispatch(insertBlog({
+                        dispatch(insertEvent({
                             data: data,
                             token: appToken
                         }));
                         setModalInsert(false);
                     } else {
-                        toast.error('Insert Blog Fail')
+                        toast.error('Insert Event Fail')
                     }
                 })
         } else {
-            dispatch(insertBlog({
+            dispatch(insertEvent({
                 data: data,
                 token: appToken
             }));
-            setModalInsert(false);
+           
         }
+        setModalInsert(false);
        setTimeout(()=>{
-        dispatch(fetchBlog({
+        dispatch(fetchEvent({
             page: page,
             pageSize: 20,
             token: appToken
@@ -135,19 +139,23 @@ export default function Blog() {
 
     useEffect(() => {
 
-        dispatch(fetchBlog({
+        dispatch(fetchEvent({
             page: page,
-            pageSize: 20,
+            pageSize: 10,
             token: appToken
         }))
     }, []);
     const handleChangePage = ({ pageChange }) => {
-        dispatch(changePage(pageChange))
+        dispatch(fetchEvent({
+            page: pageChange,
+            pageSize: 10,
+            token: appToken
+        }))
     }
     return (
 
         <DefaultLayout>
-            <Breadcrumb pageName='Blog' />
+            <Breadcrumb pageName='Event' />
             <>
                 <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-3'>
                     <div className="flex flex-row justify-end">
@@ -169,13 +177,13 @@ export default function Blog() {
                                 </Table.HeaderCell>
 
                                 <Table.HeaderCell>
-                                    Category
+                                    Start Time
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    View Count
+                                   End Time
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Public Time
+                                   User Subcribe
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     Handler
@@ -187,11 +195,11 @@ export default function Blog() {
                             {data.map((item, index) => (
                                 <Table.Row key={item.id}>
                                     <Table.Cell>{index + 1}</Table.Cell>
-                                    <Table.Cell>{item.title}</Table.Cell>
-                                    <Table.Cell>{item.description}</Table.Cell>
-                                    <Table.Cell>{item.category?.name}</Table.Cell>
-                                    <Table.Cell>{item.viewCount}</Table.Cell>
-                                    <Table.Cell>{moment(new Date(item.publicTime)).format('DD/MM/YYYY')}</Table.Cell>
+                                    <Table.Cell><p className='description-base-3'>{item.title}</p></Table.Cell>
+                                    <Table.Cell ><p className="description-base-3">{item.description}</p></Table.Cell>
+                                    <Table.Cell>{moment(new Date(item.startTime)).format('DD/MM/YYYY HH:mm')}</Table.Cell>
+                                    <Table.Cell>{moment(new Date(item.finishTime)).format('DD/MM/YYYY HH:mm')}</Table.Cell>
+                                    <Table.Cell>{item.eventUserSubs?.length}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
                                             <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
@@ -205,11 +213,13 @@ export default function Blog() {
                     </Table>
                     <div className="flex flex-row justify-end p-2">
                         <Pagination
+                          
                             activePage={page}
                             totalPages={totalPage}
-                            onPageChange={(_, { activePage }) => handleChangePage(activePage)}
+                            onPageChange={(_, { activePage }) => handleChangePage({pageChange:activePage})}
                             size="mini"
-                            siblingRange={1}
+                            boundaryRange={0}
+                            siblingRange={2}
                             firstItem={null}
                             lastItem={null}
                             ellipsisItem={{ content: <Icon name="ellipsis horizontal" />, icon: true }}
@@ -220,10 +230,10 @@ export default function Blog() {
                 </div>
 
 
-                <BlogInsert open={modalInsert} handlerConfirm={handlerInsert} handleClose={() => setModalInsert(false)} />
-                <BlogDelete open={modalDelete} data={valueSelected} handlerConfirm={handleConfirmDelete} handleClose={() => setModalDelete(false)} />
+                <EventInsert open={modalInsert} handlerConfirm={handlerInsert} handleClose={() => setModalInsert(false)} />
+                <EventDelete open={modalDelete} data={valueSelected} handlerConfirm={handleConfirmDelete} handleClose={() => setModalDelete(false)} />
                 {
-                    modalEdit && <BlogUpdate open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
+                    modalEdit && <EventUpdate open={modalEdit} data={valueSelected} handlerConfirm={handlerConfirmEdit} handleClose={() => setModalEdit(false)} />
                 }
             </>
         </DefaultLayout>

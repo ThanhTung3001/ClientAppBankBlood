@@ -48,18 +48,17 @@ function uploadAdapter(loader, AppToken) {
 }
 
 const fileTypes = ["JPG", "PNG", "GIF"];
-export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
-    console.log(data);
+export const EventInsert = ({ open, data, handleClose, handlerConfirm }) => {
     const InsertSchema = Yup.object().shape({
-        title: Yup.string().required('Name is required').min(5, 'Too short').max(50, 'too long'),
-        description: Yup.string().required('Description is required').min(10, 'Too short').max(200, 'too long'),
-        publicTime: Yup.date()
+        title: Yup.string().required('Name is required').min(5, 'Too short').max(200, 'too long'),
+        description: Yup.string().required('Description is required').min(10, 'Too short').max(2000, 'too long'),
+        startTime: Yup.date()
             .required('Public time is required')
-            .min(new Date(), 'Public time must be after or equal to today')
-            .max(
-                new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
-                'Public time must be before or equal to 30 days after today'
-            ),
+            .min(new Date(), 'Public time must be after or equal to today'),
+        finishTime: Yup.date()
+            .required('Public time is required')
+            .min(new Date(60*60*24), 'Public time must be after or equal to today')
+
         // phoneNumber: Yup.number().required('Capacity is required')
     });
     const AppToken = useSelector(state => state.SignUp.token);
@@ -67,52 +66,52 @@ export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
     const [fileStore, setFileStore] = useState({});
     const [categories, setCategories] = useState([]);
     const [tagSelected, setTagSelected] = useState(null);
-    const [categorySelected, setCategorySelected] = useState({label:data.category?.name,value:data.categoryId});
+    const [categorySelected, setCategorySelected] = useState(null);
     const [tags, setTags] = useState([]);
-    const [editorContent, setEditorContent] = useState(data.content);
+    const [editorContent, setEditorContent] = useState('');
     const [publicTimer, setPublicTimer] = useState(null);
     const handleChange = (file) => {
         setFile(file);
     };
     function uploadPlugin(editor) {
-        //  console.log(editor);
         editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
             return uploadAdapter(loader, AppToken);
         };
     }
     useEffect(() => {
-        GetWithToken({ url: '/api/Category', token: AppToken })
-            .then((rs) => {
-                setCategories((rs.data.data).map(e => {
-                    return {
-                        value: e.id,
-                        label: e.name
-                    }
-                }));
-            })
-        GetWithToken({ url: '/api/Tag', token: AppToken })
-            .then((rs) => {
-                setTags((rs.data.data).map(e => {
-                    return {
-                        value: e.id,
-                        label: e.name
-                    }
-                }));
-            })
+        // GetWithToken({ url: '/api/Category', token: AppToken })
+        //     .then((rs) => {
+        //         setCategories((rs.data.data).map(e => {
+        //             return {
+        //                 value: e.id,
+        //                 label: e.name
+        //             }
+        //         }));
+        //     })
+        // GetWithToken({ url: '/api/Tag', token: AppToken })
+        //     .then((rs) => {
+        //         setTags((rs.data.data).map(e => {
+        //             return {
+        //                 value: e.id,
+        //                 label: e.name
+        //             }
+        //         }));
+        //     })
     }, []);
     return (
         <>
             {
                 open ? (
                     <div
-                        className=" w-full h-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-9999 outline-none focus:outline-none bg-black bg-opacity-50"
+                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-9999 outline-none focus:outline-none bg-black bg-opacity-50"
                     >
                         <Formik
                             initialValues={
                                 {
-                                    title: data.title,
-                                    description: data.description??"",
-                                    publicTime:moment(new Date(data.publicTime)).format("YYYY-MM-DD")
+                                    title: '',
+                                    description: '',
+                                    startTime: moment(new Date()).format("YYYY-MM-DD"),
+                                    finishTime:  moment(new Date()).add(1, 'day').format("YYYY-MM-DD")
 
                                 }
                             }
@@ -120,12 +119,12 @@ export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
                             onSubmit={(values) => {
 
                                 // console.log(values,file);
-                                values = {
-                                    ...values,
-                                    content: editorContent,
-                                    categoryId: categorySelected.value
-                                }
-                                console.log('value: ',values);
+                                // values = {
+                                //     ...values,
+                                //     content: editorContent,
+                                //     categoryId: categorySelected.value
+                                // }
+                                console.log(values);
 
                                 handlerConfirm(values, file);
 
@@ -133,14 +132,14 @@ export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
                         >
                             {
                                 ({ errors, touched }) => (
-                                    <Form className='w-full h-full'>
+                                    <Form className='h-full w-[60%]'>
                                         <div className="relative my-6 mx-auto h-full w-full">
 
                                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-full">
                                                 {/*header*/}
                                                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t border-b-1 border-gray">
                                                     <h3 className="text-3xl font-semibold text-black">
-                                                        Blog Insert
+                                                        Event Create
                                                     </h3>
                                                     <button
                                                         className="p-1 ml-auto bg-transparent border-0 text- bg-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -188,7 +187,7 @@ export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
                                                                         as="textarea"
 
                                                                         // value={data.capacity}
-                                                                        placeholder='Description'
+                                                                        placeholder='category'
 
                                                                         className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                                                     />
@@ -201,24 +200,6 @@ export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
 
 
                                                             </div>
-                                                            <div className="flex flex-wrap sm:flex-row justify-between">
-                                                                <div className='w-full sm:w-5/12 '>
-                                                                    <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
-                                                                        Category
-                                                                    </label>
-                                                                    <div className="relative">
-                                                                        <Select options={categories} required value={categorySelected} onChange={(e) => setCategorySelected(e)} />
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-full sm:w-5/12 '>
-                                                                    <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
-                                                                        Tags
-                                                                    </label>
-                                                                    <div className="relative">
-                                                                        <Select options={tags} isMulti value={tagSelected} onChange={(e) => setTagSelected(e)} />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
                                                             <div>
                                                                 <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
@@ -227,53 +208,55 @@ export const BlogUpdate = ({ open, data, handleClose, handlerConfirm }) => {
                                                                 <FileUploader handleChange={handleChange} name="file" types={fileTypes} />
 
                                                             </div>
-                                                            <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
-                                                                Content
-                                                            </label>
-                                                            <CKEditor
-                                                                config={{
-                                                                    extraPlugins: [uploadPlugin]
-                                                                }}
-                                                                editor={ClassicEditor}
-                                                                data={editorContent}
 
-                                                                onReady={(editor) => {
-                                                                    console.log('ready');
-                                                                    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                                                                        return uploadAdapter(loader, AppToken);
-                                                                    };
-                                                                }}
-                                                                onChange={(event, editor) => {
-                                                                    const data = editor.getData();
-                                                                    setEditorContent(data)
-                                                                }}
-
-                                                            />
                                                             <div >
-                                                            <div>
-                                                                <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
-                                                                    Public Time
-                                                                </label>
-                                                                <div className="relative">
-                                                                    <Field
-                                                                        name="publicTime"
-                                                                        type="date"
-                                                                        // as="date"
+                                                                <div>
+                                                                    <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
+                                                                        Start Time
+                                                                    </label>
+                                                                    <div className="relative">
+                                                                        <Field
+                                                                            name="startTime"
+                                                                            type="date"
+                                                                            // as="date"
+                                                                            // value={data.capacity}
+                                                                            placeholder='Public Time'
 
-                                                                        // value={data.capacity}
-                                                                        placeholder='Public Time'
-
-                                                                        className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                                                    />
-                                                                    <div>
-                                                                        {
-                                                                            errors.publicTime && touched.publicTime ? (<span className='text-danger'>{errors.publicTime}</span>) : (null)
-                                                                        }
+                                                                            className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                                                        />
+                                                                        <div>
+                                                                            {
+                                                                                errors.startTime && touched.startTime ? (<span className='text-danger'>{errors.startTime}</span>) : (null)
+                                                                            }
+                                                                        </div>
                                                                     </div>
+
+
                                                                 </div>
+                                                                <div>
+                                                                    <label className='mb-1 mt-3 block font-medium text-black dark:text-white'>
+                                                                        Finish Time
+                                                                    </label>
+                                                                    <div className="relative">
+                                                                        <Field
+                                                                            name="finishTime"
+                                                                            type="date"
+                                                                            // as="date"
+
+                                                                            // value={data.capacity}
+                                                                            placeholder='Public Time'
+
+                                                                            className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                                                        />
+                                                                        <div>
+                                                                            {
+                                                                                errors.finishTime && touched.finishTime ? (<span className='text-danger'>{errors.finishTime}</span>) : (null)
+                                                                            }
+                                                                        </div>
+                                                                    </div>
 
 
-                                                            </div>
+                                                                </div>
                                                             </div>
                                                         </div>
 

@@ -1,0 +1,47 @@
+@import '../../scss/variable';
+
+.logo{
+    line-height: 60px;
+    color: $secondaryColor;
+}
+header .item{
+    position: relative;
+    display: inline-block;
+    margin: 0 16px;
+    transition: border-bottom 0.5s ease-in;
+    &a{
+        color: color;
+        text-align: center;
+    }
+}
+ .item::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: red;
+    transition: width 1s;
+}
+
+ul{
+    align-items: center;
+}
+.top-header{
+   // box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+   transition: all 0.5s ease-in-out;
+}
+.item-active::after {
+    width: 80%;
+    transform: scaleX(1);
+  }
+
+  .scroll-header{
+    width: 80% !important;
+    margin: 0px !important;
+    background-color: white !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+    top: 30px;
+  }
+
