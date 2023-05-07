@@ -13,11 +13,17 @@ export const About = () => {
                 mb-4
                 sm:text-4xl
                '>ABOUT BANKBLOOD</h3>
-          <p className='text-sm sm:text-base'>Bankblood is a non-profit organization that operates as a blood donation website to connect blood donors with individuals and hospitals in need of blood transfusions. The website was created with the aim of addressing the shortage of blood supply in many countries and regions around the world.
+          <p className='text-sm sm:text-base'>
+          Blood Bank is a mobile application that serves as a platform to connect blood donors with patients in need of blood transfusions. With the app, users can register as blood donors, search for nearby blood banks, and schedule blood donations at their convenience.
 
-            The website is user-friendly and easy to navigate, allowing users to register as blood donors or search for blood donors in their area. Registered donors can create a profile that includes their blood type, contact information, and availability to donate blood. This information is then made available to hospitals and individuals who need blood transfusions.
+The app allows users to set up a personal profile with their blood type, location, and availability for donation. Once registered, users can receive notifications of nearby blood donation events and requests for blood donations from local hospitals and blood banks.
 
-            Bankblood also provides educational resources about blood donation and the importance of maintaining a healthy blood supply. This includes information about the different blood types, eligibility criteria for blood donors, and the process of donating blood.
+Blood Bank also provides a feature for emergency blood requests, where hospitals can post urgent requests for blood donations, and users within the vicinity can respond quickly to donate blood.
+
+The app provides an easy-to-use interface that makes it simple for donors to track their donation history, manage their appointments, and receive updates on their eligibility to donate blood.
+
+Overall, Blood Bank aims to simplify the process of blood donation and help bridge the gap between blood donors and patients in need of blood transfusions.
+Download for mobile devices.
 
           </p>
          <div className="flex w-full">

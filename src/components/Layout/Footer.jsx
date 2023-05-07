@@ -16,9 +16,7 @@ export  const Footer = () => (
                         About Us
                     </p>
                     <p className="pt-0 sm:pt-2 text-gray-200">
-                        An award winning agency based
-                        in London. difference. An award
-                        winning agency based in
+                    The system was developed by a student named Chau Du.
                     </p>
                     <div className="flex flex-row mt-2 pt-0 sm:mt-3 justify-start">
                          <Link className='bg-[#2754fe] btn btn-primary btn-social mr-0 sm:mr-3'><BsBrowserSafari color='white' size={18}/></Link>
@@ -74,7 +72,7 @@ export  const Footer = () => (
                         Contact
                     </p>
                     <p className=" pt-0 sm:pt-2 text-gray-200">
-                        Contact@bloodbank.vn
+                         bloodbank.ad@gmail.com
                     </p>
                     <p className=" p-0 text-gray-200 mb-0">
                         Info@bloodbank.vn
@@ -83,7 +81,7 @@ export  const Footer = () => (
                         Phone
                     </p>
                     <p className="text-gray-200">
-                        +84359254498
+                     0943357474
                     </p>
                 </div>
             </div>   <div className="w-1/2 sm:w-2/5 p-2">
@@ -92,9 +90,7 @@ export  const Footer = () => (
                         Subcribe Now
                     </p>
                     <p className="pt-2 text-gray-200">
-                        An award winning agency based in London.
-                        Wedesign beautiful products make a
-                        difference.
+                    An award winning agency based in Hue. We design beautiful products make a difference.
                     </p>
                         <div className="mt-2 sm:mt-8 bg-white p-0 sm:pt-3 rounded-md">
                             <Logo />

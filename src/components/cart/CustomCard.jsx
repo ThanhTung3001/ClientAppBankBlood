@@ -1,5 +1,6 @@
 import React from 'react';
 import './card.scss';
+import { Tooltip } from 'antd';
 
 export const CustomCard = ({number,title,body,className}) => {
   return (
@@ -10,10 +11,12 @@ export const CustomCard = ({number,title,body,className}) => {
                             {number}
                     </div>
             </div>
-            <div className="processing-content mt-4">
+          <Tooltip title={body}>
+          <div className="processing-content mt-4">
                     <h3 className='text-2xl font-bold text-center sm:text-left'>{title}</h3>
                     <p className='text-md text-gray-600 mt-2 text-center  sm:text-left'>{body}</p>
             </div>
+          </Tooltip>
     </div>
 </div>
   )

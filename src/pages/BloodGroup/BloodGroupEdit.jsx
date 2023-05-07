@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 export default function BloodGroupEdit({ open, data, handleClose,handlerConfirm }) {
 
     const SignupSchema = Yup.object().shape({
-        name: Yup.string().required('Name is required').min(5, 'Too short').max(20, 'too long'),
+        name: Yup.string().required('Name is required').max(20, 'too long'),
         description: Yup.string().required('Description is required').min(10, 'Too short').max(50, 'too long'),
         capacity: Yup.number().required('Capacity is required')
     });

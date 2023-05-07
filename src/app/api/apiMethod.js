@@ -34,6 +34,7 @@ export const PutWithToken = async ({ url, body, token }) => {
 export const GetWithToken = async ({ url, token }) => {
   //  const token = useSelector(state=>state.SignUp.token);
   // console.log(token);
+  token =  localStorage.getItem("Token");
   var urls = `${BASE_URL}${url}`;
   // console.log({ urls, token });
   var response = await axios.get(urls, {

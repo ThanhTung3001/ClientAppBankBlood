@@ -38,7 +38,7 @@ export const HomePage = () => {
                 <div className="w-full  h-full flex flex-col justify-center items-center">
                         <h2 className='text-4xl sm:text-6xl font-bold text-gray-800 text-center md:text-left'>Donate blood, save life !</h2>
                         <p className="text-base mt-0 mb-0 sm:text-md w-full sm:w-[80%] sm:mt-4 sm:mb-4 text-gray-500 text-center">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure accusantium magni, laborum, ducimus, saepe officiis at odio possimus quibusdam deserunt perferendis molestiae id ab aliquam reprehenderit quas earum animi consectetur.
+                        This is a user-friendly blood donation website that aims to connect people who need blood with those who are willing to donate. The website provides valuable information about blood donation, including the criteria and procedure for donating blood, the benefits of donating blood, and various health-related issues.This is a user-friendly blood donation website that aims to connect people who need blood with those who are willing to donate. The website provides valuable information about blood donation, including the criteria and procedure for donating blood, the benefits of donating blood, and various health-related issues.
                         </p>
                         {/* <Button size='large' type="primary" className='button-primary mt-2 sm:mt-6'>Donate now</Button> */}
                         <button className="button-36 mt-6" role="button" onClick={handlerConnectWallet}>Donate Now</button>

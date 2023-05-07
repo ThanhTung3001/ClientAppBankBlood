@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 function ImageWithFallback({src,className,alt}) {
+  console.log(src);
     if (src.indexOf("http") !== src.lastIndexOf("http")) {
         // Loại bỏ phần đầu tiên
         src = src.substring(src.indexOf("http", 1));

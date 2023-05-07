@@ -13,7 +13,7 @@ export const arrayMenu = [
         name:'About',
         path:'/about'
     }, {
-        name:'Campaing',
+        name:'Event',
         path:'/campaing'
     },  {
         name:'Blog',

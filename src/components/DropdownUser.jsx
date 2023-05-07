@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import UserOne from '../images/user/user-01.png'
 import { useDispatch } from 'react-redux'
 import { SignOut } from '../pages/Authentication/signupSlice'
+import { BASE_URL } from '../BaseUrl'
 
 const DropdownUser = ({user}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -53,7 +54,7 @@ const DropdownUser = ({user}) => {
         </span>
 
         <span className='h-12 w-12 rounded-full'>
-          <img src={user.userInfo?.avatar} alt='User'  className='rounded-full'/>
+          <img src={BASE_URL+user.userInfo?.avatar} alt='User'  className='rounded-full'/>
         </span>
 
         <svg
@@ -81,7 +82,7 @@ const DropdownUser = ({user}) => {
         className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${dropdownOpen === true ? 'block' : 'hidden'
           }`}
       >
-        <ul className='flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark'>
+        <ul className='flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark items-start'>
           <li>
             <Link
               to='/admin/profile'

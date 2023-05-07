@@ -59,8 +59,7 @@ export const LastNews = () => {
                     </div>
                 </div>
                 <div className="camping-description w-full sm:w-1/2 mt-4">
-                    <p className='text-gray-600 text-md'>Encourage new donors toblood. We have total donor centers and visit
-                        thousands of other venues on various occasions..</p>
+                    <p className='text-gray-600 text-md'>Update the latest news of the day.</p>
                 </div>
                 <div className="camping-caroul">
                     <Carousel autoPlay centerMode responsive={responsive} className=''>

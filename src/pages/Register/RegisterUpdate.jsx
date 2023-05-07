@@ -110,7 +110,8 @@ export default function RegisterUpdate({ open, data, handleClose, handlerConfirm
                                     hospitalId: hospitalsSelected.value,
                                     bloodGroupId: bloodGroupsSelected.value,
                                     userId: userInfoSelected.value,
-                                    status: status.value
+                                    status: status.value,
+                                    qrCode: data.qrCode
                                 }
                                 handlerConfirm(values);
                             }}

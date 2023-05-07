@@ -88,14 +88,13 @@ export const OurCamping = () => {
         <div id='our-camping'>
             <div className="container ">
                 <div className="camping-header flex justify-between items-center">
-                    <h3 className='text-4xl text-center sm:text-left w-full '> Our campaings</h3>
+                    <h3 className='text-4xl text-center sm:text-left w-full '> Our events</h3>
                     <div className="see-all" onClick={()=>navigate('/campaing')}>
                         <p className=" hidden text-xl sm:flex items-center hover:text-green-500 sm:w-[100px]">See all <AiOutlineArrowRight className='ml-2' /></p>
                     </div>
                 </div>
                 <div className="camping-description w-full sm:w-1/2 mt-4">
-                    <p className='text-gray-600 text-md'>Encourage new donors toblood. We have total donor centers and visit
-                        thousands of other venues on various occasions.</p>
+                    <p className='text-gray-600 text-md'>Encourage new blood donors. We have events happening during certain time periods.</p>
                 </div>
                 <div className="camping-caroul">
                     <Carousel autoPlay infinite responsive={responsive} className=''>

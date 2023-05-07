@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import { DeleteUser, FetchUserAsync, UpdateRoleForUser } from './userSlice';
 import Select from 'react-select'
 import { UserTable } from './UserTable';
+import axios from 'axios';
+
 
 
 export const UserManagement = () => {
@@ -30,18 +32,32 @@ export const UserManagement = () => {
     const [roleSelected, setRoleSelected] = useState([]);
     const [showModalDelete, setShowModalDelete] = useState(false);
     const status = useSelector(state => state.UserReducer.status);
+    const [hospital,setHospital] = useState([]);
+    const [hospitalSelected,setHospitalSelected] = useState({});
 
 
     const handleUpdate = (data) => {
-
+        console.log(`${BASE_URL}/api/UserInfo/UpdateHospitalId/${hospitalSelected.value}?appUserId=${dataModalEdit.userInfo.id}`);
+        axios.put(`${BASE_URL}/api/UserInfo/UpdateHospitalId/${hospitalSelected.value}?appUserId=${dataModalEdit.id}`,null,{headers:{
+            'Authorization':localStorage.getItem('Token')
+        }}).then(rs=>{
+            if(rs.status==200){
+               // toast.success('Update Hospital Success');
+           
+            }
+        });
         dispatch(UpdateRoleForUser({
-            data: roleSelected,
+            data: roleSelected.length==0?dataModalEdit.roles:roleSelected,
             token: Apptoken,
             username: dataModalEdit.userName
         }));
+       
+     
+       
         setTimeout(() => {
             dispatch(FetchUserAsync(Apptoken));
-        }, 2000)
+        }, 2000);
+
         setShowModalEdit(!showModalEdit);
     }
 
@@ -63,12 +79,19 @@ export const UserManagement = () => {
         setShowModal(!showModal);
     }
     const handlerOpenEdit = (data) => {
+        console.log(data);
         setShowModalEdit(!showModalEdit);
         setDataModalEdit(data);
     }
     useEffect(() => {
 
         dispatch(FetchUserAsync(Apptoken));
+
+         GetWithToken({url:'/api/Hospital',token:""})
+         .then(e=>{
+          //  console.log(e.data.data);
+             setHospital(e.data.data);
+         })
     }, []);
 
     return (
@@ -302,6 +325,36 @@ export const UserManagement = () => {
                                                                         label: e
                                                                     }
                                                                 }))} />
+                                                            <div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div >
+                                                        <label className='mb-1 mt-4 block font-medium text-black dark:text-white'>
+                                                            Hospital
+                                                        </label>
+                                                        <div className='relative'>
+                                                            <Select
+                                                                className='border-stroke'
+                                                                
+                                                                closeMenuOnSelect={true}
+                                                               
+                                                                options={hospital.map((e, index) => {
+                                                                        return {
+                                                                            value: e.id,
+                                                                            label: e.name
+                                                                        }
+                                                                    })}
+                                                                    onChange={(newValue)=>setHospitalSelected(newValue)}
+                                                                defaultValue={{
+                                                                    value:dataModalEdit.userInfo?.hospitalId,
+                                                                    label:hospital.filter(e=>{
+                                                                       // console.log(dataModalEdit.userInfo);
+                                                                     var hospitalID=dataModalEdit.userInfo?.hospitalId;
+                                                                 
+                                                                        return e.id==hospitalID;
+                                                                    })[0]?.name
+                                                                }} />
                                                             <div>
                                                             </div>
                                                         </div>
