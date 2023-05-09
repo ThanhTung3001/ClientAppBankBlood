@@ -5,7 +5,7 @@ import UserOne from '../images/user/user-01.png'
 import { useDispatch } from 'react-redux'
 import { SignOut } from '../pages/Authentication/signupSlice'
 import { BASE_URL } from '../BaseUrl'
-
+import Avatar from '../images/user/avatar.jpg'
 const DropdownUser = ({user}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dispatch = useDispatch();
@@ -54,7 +54,8 @@ const DropdownUser = ({user}) => {
         </span>
 
         <span className='h-12 w-12 rounded-full'>
-          <img src={BASE_URL+user.userInfo?.avatar} alt='User'  className='rounded-full'/>
+          
+          <img src={Avatar} alt='User'  className='rounded-full aspect-square'/>
         </span>
 
         <svg

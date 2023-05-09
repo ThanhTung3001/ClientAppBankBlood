@@ -124,8 +124,7 @@ export const UserManagement = () => {
                                                 <Table.Cell>{e.roles.join(", ")}</Table.Cell>
                                                 <Table.Cell>
                                                     <div className="flex justify-around">
-                                                        <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => handlerOpenView(e)} />
-                                                        <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => handlerOpenEdit(e)} />
+                                                       <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => handlerOpenEdit(e)} />
                                                         <AiFillDelete color='#cc2a36' className='hover: cursor-pointer ' onClick={() => { setDataModalEdit(e); setShowModalDelete(true) }} />
 
                                                     </div>

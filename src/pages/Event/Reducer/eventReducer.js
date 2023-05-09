@@ -12,9 +12,9 @@ const initialState = {
     sort: ''
 }
 
-export const fetchEvent = createAsyncThunk("Event/fetchEvent", async ({ page, pageSize, token }) => {
+export const fetchEvent = createAsyncThunk("Event/fetchEvent", async ({ page, pageSize,search="", token }) => {
 
-    var { data } = await GetWithToken({ url: `/api/Event?PageNumber=${page}&PageSize=${pageSize}`, token: token });
+    var { data } = await GetWithToken({ url: `/api/Event?PageNumber=${page}&PageSize=${pageSize}&Keyword=${search}`, token: token });
 
     return data;
 });

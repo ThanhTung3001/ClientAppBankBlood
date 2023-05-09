@@ -51,22 +51,8 @@ export const BaseBlog = () => {
     }
 
     return <div id='camping' className='h-[100%]' >
-        <div className="flex flex-row justify-end mt-30 w-full container">
-            <Pagination
-                activePage={currentPage}
-                totalPages={totalPage}
-                onPageChange={(_, { activePage }) => handleChangePage({ pageChange: activePage })}
-                size="mini"
-                boundaryRange={0}
-                siblingRange={2}
-                firstItem={null}
-                lastItem={null}
-                ellipsisItem={{ content: <Icon name="ellipsis horizontal" />, icon: true }}
-                prevItem={{ content: <Icon name="angle left" />, icon: true }}
-                nextItem={{ content: <Icon name="angle right" />, icon: true }}
-            />
-        </div>
-        <div className="container content mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        
+        <div className="container content mt-30 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
             {
                 (
                     (data.map((e, index) => (
@@ -89,9 +75,27 @@ export const BaseBlog = () => {
 
                                 </div>
                             </div>
+                            
                         </div>
+                        
                     ))))
+                    
             }
+            <div className="flex flex-row justify-end mt-4 w-full container">
+            <Pagination
+                activePage={currentPage}
+                totalPages={totalPage}
+                onPageChange={(_, { activePage }) => handleChangePage({ pageChange: activePage })}
+                size="mini"
+                boundaryRange={0}
+                siblingRange={2}
+                firstItem={null}
+                lastItem={null}
+                ellipsisItem={{ content: <Icon name="ellipsis horizontal" />, icon: true }}
+                prevItem={{ content: <Icon name="angle left" />, icon: true }}
+                nextItem={{ content: <Icon name="angle right" />, icon: true }}
+            />
+        </div>
         </div>
         {/* <div className="flex justify-center">
       <Pagination currentPage={currentPage} onPageChange={handlePageChange} totalPages={totalPages} />

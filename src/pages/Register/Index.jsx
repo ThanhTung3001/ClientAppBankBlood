@@ -23,6 +23,7 @@ export default function RegisterBloodBank() {
     const [modalInsert, setModalInsert] = useState(false);
     //ValueSelected
     const [valueSelected, setValueSelected] = useState({});
+    const [keyword,setKeyword]=useState('');
     //Handler
     const SeletedHandler = (value) => {
         //  console.log(value);
@@ -112,16 +113,23 @@ export default function RegisterBloodBank() {
         dispatch(fetchRegistration({
             page: page,
             pageSize: 10,
-            token: appToken
+            token: appToken,
+            search:keyword
         }))
-    }, []);
+    }, [keyword]);
     const handleChangePage = ({ pageChange }) => {
         dispatch(fetchRegistration({
             page: pageChange,
             pageSize: 10,
-            token: appToken
+            token: appToken,
+            search:keyword
         }))
     }
+    const handleChangeInput=(e)=>{
+        var textSearch =  e.target.value;
+        console.log(textSearch);
+        setKeyword(textSearch); 
+}
     const StatusView = ({ status }) => {
         switch (status) {
             case 1:
@@ -157,9 +165,16 @@ export default function RegisterBloodBank() {
             <Breadcrumb pageName='Register Donate' />
             <>
                 <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                    <div className="flex flex-row justify-end">
-                        <div className="flex w-[50px] justify-center rounded bg-primary m-3 mr-4 mb-0 p-3 font-medium text-gray">
-                            <AiFillPlusSquare size={16} onClick={() => setModalInsert(true)} />
+                <div className="flex flex-row justify-between">
+                    <div className="search-block min-w-75">
+                        <input type="text"
+                         value={keyword}
+                         placeholder='Search'
+                         onChange={handleChangeInput}
+                        className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary' />
+                    </div>
+                        <div onClick={() => setModalInsert(true)} className="flex w-[50px] justify-center rounded bg-primary m-3 mr-4 mb-0 p-3 font-medium text-gray">
+                            <AiFillPlusSquare size={16} />
                         </div>
                     </div>
                     <Table celled loading={loading.toString()} className='mb-0'>
@@ -200,8 +215,7 @@ export default function RegisterBloodBank() {
                                     <Table.Cell>{<StatusView status={item.status} />}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
-                                            <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
-                                            <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => HandleOpenEditModal(item)} />
+                                           <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => HandleOpenEditModal(item)} />
                                             <AiFillDelete color='#cc2a36' className='hover: cursor-pointer ' onClick={() => handleOpenDeleteModal(item)} />
                                         </div>
                                     </Table.Cell>

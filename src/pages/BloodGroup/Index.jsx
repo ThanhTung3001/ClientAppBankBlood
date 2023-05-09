@@ -145,7 +145,6 @@ export default function BloodGroup() {
                                     <Table.Cell>{toVNNumber(item.capacity)}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
-                                            <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
                                             <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => HandleOpenEditModal(item)} />
                                             <AiFillDelete color='#cc2a36' className='hover: cursor-pointer ' onClick={() => handleOpenDeleteModal(item)} />
                                         </div>

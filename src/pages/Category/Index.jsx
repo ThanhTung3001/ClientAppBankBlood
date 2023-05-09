@@ -10,6 +10,7 @@ import { CategoryEdit } from './CategoryEdit';
 import { CategoryInsert } from './CategoryInsert';
 import {CategoryDelete} from './CategoryDelete';
 import { PostFileWithToken } from '../../app/api/apiMethod';
+
 import { toast } from 'react-toastify';
 
 export default function Category() {
@@ -167,8 +168,7 @@ export default function Category() {
                                     <Table.Cell>{item.description}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
-                                            <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
-                                            <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => HandleOpenEditModal(item)} />
+                                           <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => HandleOpenEditModal(item)} />
                                             <AiFillDelete color='#cc2a36' className='hover: cursor-pointer ' onClick={() => handleOpenDeleteModal(item)} />
                                         </div>
                                     </Table.Cell>

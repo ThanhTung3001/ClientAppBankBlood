@@ -21,7 +21,8 @@ export default function Blog() {
     const page = useSelector(state => state.Blog.page);
     const appToken = useSelector(state => state.SignUp.token);
     const loading = useSelector(state => state.Blog.loading);
-    const userCurrentData = useSelector(state => state.SignUp.userResponse)
+    const userCurrentData = useSelector(state => state.SignUp.userResponse);
+    
     //Modal
     const [modalView, setModalView] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
@@ -30,6 +31,7 @@ export default function Blog() {
     //ValueSelected
     const [valueSelected, setValueSelected] = useState({});
     const dispatch = useDispatch();
+    const[keyword,setKeyword] = useState('');
     //Handler
     const SeletedHandler = (value) => {
         setValueSelected(value);
@@ -74,17 +76,17 @@ export default function Blog() {
                 data: data,
                 token: appToken
             }));
-            
+
         }
         setModalEdit(false);
 
-        setTimeout(()=>{
+        setTimeout(() => {
             dispatch(fetchBlog({
                 page: page,
                 pageSize: 20,
                 token: appToken
             }))
-           },3000)
+        }, 3000)
     }
     const handleConfirmDelete = (data) => {
         dispatch(deleteBlog({
@@ -122,16 +124,16 @@ export default function Blog() {
                 data: data,
                 token: appToken
             }));
-           
+
         }
         setModalInsert(false);
-       setTimeout(()=>{
-        dispatch(fetchBlog({
-            page: page,
-            pageSize: 20,
-            token: appToken
-        }))
-       },3000)
+        setTimeout(() => {
+            dispatch(fetchBlog({
+                page: page,
+                pageSize: 20,
+                token: appToken
+            }))
+        }, 3000)
         // console.log(appToken);
 
     }
@@ -141,15 +143,22 @@ export default function Blog() {
         dispatch(fetchBlog({
             page: page,
             pageSize: 10,
-            token: appToken
+            token: appToken,
+            search:keyword
         }))
-    }, []);
+    }, [keyword]);
     const handleChangePage = ({ pageChange }) => {
         dispatch(fetchBlog({
             page: pageChange,
             pageSize: 10,
-            token: appToken
+            token: appToken,
+            search:keyword
         }))
+    }
+    const handleChangeInput=(e)=>{
+            var textSearch =  e.target.value;
+            console.log(textSearch);
+            setKeyword(textSearch); 
     }
     return (
 
@@ -157,7 +166,14 @@ export default function Blog() {
             <Breadcrumb pageName='Blog' />
             <>
                 <div className='w-full max-w-full rounded-2xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-3'>
-                    <div className="flex flex-row justify-end">
+                    <div className="flex flex-row justify-between">
+                    <div className="search-block min-w-75">
+                        <input type="text"
+                         value={keyword}
+                         placeholder='Search'
+                         onChange={handleChangeInput}
+                        className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary' />
+                    </div>
                         <div onClick={() => setModalInsert(true)} className="flex w-[50px] justify-center rounded bg-primary m-3 mr-4 mb-0 p-3 font-medium text-gray">
                             <AiFillPlusSquare size={16} />
                         </div>
@@ -201,7 +217,6 @@ export default function Blog() {
                                     <Table.Cell>{moment(new Date(item.publicTime)).format('DD/MM/YYYY')}</Table.Cell>
                                     <Table.Cell width={'1'}>
                                         <div className="flex justify-around">
-                                            <AiFillEye color='#7bc043' className='hover: cursor-pointer' onClick={() => HandleOpenViewModal(item)} />
                                             <AiFillEdit color='#3b7dd8' className='hover: cursor-pointer ' onClick={() => HandleOpenEditModal(item)} />
                                             <AiFillDelete color='#cc2a36' className='hover: cursor-pointer ' onClick={() => handleOpenDeleteModal(item)} />
                                         </div>
@@ -212,10 +227,10 @@ export default function Blog() {
                     </Table>
                     <div className="flex flex-row justify-end p-2">
                         <Pagination
-                          
+
                             activePage={page}
                             totalPages={totalPage}
-                            onPageChange={(_, { activePage }) => handleChangePage({pageChange:activePage})}
+                            onPageChange={(_, { activePage }) => handleChangePage({ pageChange: activePage })}
                             size="mini"
                             boundaryRange={0}
                             siblingRange={2}

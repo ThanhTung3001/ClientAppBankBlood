@@ -12,8 +12,8 @@ const initialState = {
     sort: ''
 }
 
-export const fetchRegistration = createAsyncThunk("blood/fetchRegistration", async ({ page, pageSize, token }) => {
-    var { data } = await GetWithToken({ url: `/api/Registration?PageNumber=${page}&PageSize=${pageSize}`, token: token });
+export const fetchRegistration = createAsyncThunk("blood/fetchRegistration", async ({ page, pageSize,search="", token }) => {
+    var { data } = await GetWithToken({ url: `/api/Registration?PageNumber=${page}&PageSize=${pageSize}&Keyword=${search}`, token: token });
     return data;
 });
 

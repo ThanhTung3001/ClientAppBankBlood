@@ -22,7 +22,10 @@ export const arrayMenu = [
         name:'Contact',
         path:'/contact'
     },
-    
+    {
+        name:'Manage',
+        path:'/admin'
+    }
 ];
 
 
